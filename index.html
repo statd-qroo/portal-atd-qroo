@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Institucional — Secretaría Técnica | ATD Quintana Roo</title>
+<meta name="description" content="Portal institucional de la Agencia de Transformación Digital del Estado de Quintana Roo">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ── Paleta institucional QR ── */
+  --guinda:   #6B1A2A;   /* guinda principal */
+  --guinda2:  #8B2438;   /* guinda claro */
+  --guinda3:  #4A1020;   /* guinda oscuro */
+  --magenta:  #C41472;   /* magenta ATD oficial */
+  --magenta2: #E01A85;   /* magenta claro */
+  --dorado:   #C8960A;   /* dorado */
+  --beige:    #F5EFE6;   /* beige cálido */
+  --beige2:   #EDE4D6;   /* beige más oscuro */
+  --gris:     #F2F3F5;   /* gris claro */
+  --gris2:    #E0E2E7;   /* gris medio */
+  --gris3:    #B0B7C3;   /* gris oscuro */
+  --verde:    #1E6B3A;   /* verde */
+  --azul:     #1A4A7A;   /* azul */
+  --txt:      #1A1A2E;
+  --txt2:     #4A4A5A;
+  --txt3:     #8A8A9A;
+  --white:    #FFFFFF;
+  --r:        12px;
+  --r2:       8px;
+  --sh:       0 1px 4px rgba(107,26,42,.07), 0 4px 18px rgba(107,26,42,.10);
+  --sh2:      0 8px 36px rgba(107,26,42,.18);
+  --sh3:      0 24px 80px rgba(107,26,42,.28);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gris3);border-radius:99px}
+
+/* ══ LOGIN ══ */
+#loginScreen{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--guinda3);overflow:hidden}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(196,20,114,.28) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(107,26,42,.5) 0%,transparent 60%)}
+.login-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:30px 30px}
+.login-card{position:relative;z-index:1;width:min(92vw,440px);background:rgba(255,255,255,.06);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.12);border-radius:22px;overflow:hidden;box-shadow:var(--sh3);animation:slideUp .5s cubic-bezier(.4,0,.2,1) both}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.login-top{background:linear-gradient(160deg,rgba(107,26,42,.7),rgba(74,16,32,.5));padding:2rem 2.2rem 1.6rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.login-escudo{width:72px;height:72px;margin:0 auto 1rem;filter:drop-shadow(0 6px 18px rgba(0,0,0,.4))}
+.login-gov{color:rgba(255,255,255,.45);font-size:.65rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin-bottom:.25rem}
+.login-title{color:#fff;font-size:1.1rem;font-weight:800;line-height:1.3;margin-bottom:.15rem}
+.login-sub{color:rgba(255,255,255,.4);font-size:.74rem}
+.login-body{padding:1.7rem 2.2rem 2rem}
+.login-lbl{display:block;color:rgba(255,255,255,.55);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.38rem}
+.login-sel,.login-inp{width:100%;padding:.75rem 1rem;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--r2);color:#fff;font-family:'Sora',sans-serif;font-size:.87rem;margin-bottom:1rem;transition:all .2s}
+.login-sel option{background:#4A1020}
+.login-inp::placeholder{color:rgba(255,255,255,.28)}
+.login-sel:focus,.login-inp:focus{outline:none;border-color:rgba(196,20,114,.6);background:rgba(255,255,255,.1)}
+.login-btn{width:100%;padding:.85rem;border:none;border-radius:var(--r2);cursor:pointer;background:linear-gradient(135deg,var(--magenta),var(--guinda2));color:#fff;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.02em;transition:all .25s;box-shadow:0 4px 16px rgba(196,20,114,.35);margin-top:.2rem}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,20,114,.5)}
+.login-err{color:#FCA5A5;font-size:.76rem;text-align:center;margin-top:.8rem;padding:.55rem;background:rgba(185,28,28,.2);border-radius:6px;display:none}
+.login-hint{text-align:center;margin-top:1.1rem;color:rgba(255,255,255,.2);font-size:.67rem}
+.login-hint strong{color:rgba(255,255,255,.38)}
+
+/* ══ ESCUDO SVG QR ══ */
+.escudo-qr{display:inline-block}
+
+/* ══ LAYOUT ══ */
+#app{display:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:252px;min-height:100vh;flex-shrink:0;background:var(--guinda3);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:60;overflow-y:auto}
+.sb-header{padding:1.2rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:.8rem}
+.sb-escudo{width:38px;height:38px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+.sb-brand{flex:1;min-width:0}
+.sb-brand-name{color:#fff;font-size:.78rem;font-weight:700;line-height:1.3}
+.sb-brand-state{color:rgba(255,255,255,.32);font-size:.63rem}
+.sb-user{margin:.8rem .7rem;padding:.82rem 1rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:10px}
+.sb-user-tag{display:inline-block;padding:.13rem .52rem;border-radius:99px;font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;background:rgba(196,20,114,.3);color:#F090C8;margin-bottom:.3rem}
+.sb-user-name{color:#fff;font-size:.8rem;font-weight:700;line-height:1.35}
+.sb-user-sub{color:rgba(255,255,255,.3);font-size:.65rem;margin-top:.12rem;line-height:1.35}
+.sb-nav{flex:1;padding:.35rem .7rem}
+.sb-grp{color:rgba(255,255,255,.2);font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;padding:.65rem .5rem .22rem;margin-top:.3rem}
+.sb-lnk{display:flex;align-items:center;gap:.68rem;padding:.6rem .82rem;border-radius:9px;color:rgba(255,255,255,.48);font-size:.81rem;font-weight:500;cursor:pointer;transition:all .17s;margin-bottom:.1rem;border:none;background:none;width:100%;text-align:left;font-family:'Sora',sans-serif;position:relative}
+.sb-lnk:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.82)}
+.sb-lnk.active{background:rgba(196,20,114,.25);color:#fff;font-weight:700;border-left:3px solid var(--magenta)}
+.sb-ico{font-size:.92rem;width:17px;text-align:center;flex-shrink:0;opacity:.7}
+.sb-notif-badge{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:var(--dorado);color:#fff;font-size:.58rem;font-weight:800;padding:.1rem .42rem;border-radius:99px;min-width:18px;text-align:center}
+.sb-footer{padding:.85rem .7rem;border-top:1px solid rgba(255,255,255,.06)}
+.sb-logout{display:flex;align-items:center;gap:.6rem;padding:.52rem .82rem;border-radius:9px;width:100%;border:none;background:none;cursor:pointer;color:rgba(255,255,255,.32);font-size:.77rem;font-family:'Sora',sans-serif;transition:all .17s}
+.sb-logout:hover{background:rgba(185,28,28,.22);color:#FCA5A5}
+.sb-ver{text-align:center;color:rgba(255,255,255,.12);font-size:.6rem;margin-top:.45rem;font-family:'JetBrains Mono',monospace}
+
+/* ══ TOPBAR ══ */
+.content{margin-left:252px;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:56px;background:var(--white);border-bottom:1px solid var(--gris2);display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;position:sticky;top:0;z-index:50;box-shadow:0 1px 5px rgba(107,26,42,.06)}
+.tb-l{display:flex;align-items:center;gap:.6rem}
+.tb-page{font-size:.94rem;font-weight:800;color:var(--guinda)}
+.tb-sep{color:var(--gris3)}
+.tb-area{font-size:.74rem;color:var(--txt3)}
+.tb-r{display:flex;align-items:center;gap:.85rem}
+.tb-live{display:flex;align-items:center;gap:.38rem;background:var(--gris);padding:.27rem .72rem;border-radius:99px;font-size:.69rem;color:var(--txt2);font-weight:600}
+.tb-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:blink 2s infinite}
+@keyframes blink{0%,100%{box-shadow:0 0 0 2px rgba(34,197,94,.3)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.07)}}
+.tb-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt3)}
+.tb-notif-btn{position:relative;width:34px;height:34px;border-radius:9px;background:var(--gris);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:background .2s}
+.tb-notif-btn:hover{background:var(--beige2)}
+.tb-notif-count{position:absolute;top:-4px;right:-4px;background:var(--magenta);color:#fff;font-size:.58rem;font-weight:800;padding:.08rem .38rem;border-radius:99px;min-width:16px;text-align:center}
+
+/* ══ NOTIF PANEL ══ */
+.notif-panel{position:fixed;top:60px;right:1.2rem;width:320px;background:#fff;border-radius:14px;box-shadow:var(--sh3);z-index:200;display:none;overflow:hidden;animation:slideDown .2s ease}
+.notif-panel.open{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.notif-head{padding:.85rem 1.1rem;background:var(--magenta);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.notif-title{font-size:.85rem;font-weight:700}
+.notif-clear{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.6);font-size:.72rem;font-family:'Sora',sans-serif;font-weight:600}
+.notif-clear:hover{color:#fff}
+.notif-list{max-height:360px;overflow-y:auto}
+.notif-item{padding:.82rem 1.1rem;border-bottom:1px solid var(--gris2);display:flex;gap:.7rem;align-items:flex-start;transition:background .15s;cursor:pointer}
+.notif-item:hover{background:var(--beige)}
+.notif-item.unread{background:#FFF0F7;border-left:3px solid var(--magenta)}
+.notif-ico{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.notif-info{flex:1}
+.notif-msg{font-size:.8rem;color:var(--txt);line-height:1.4;font-weight:500}
+.notif-time{font-size:.68rem;color:var(--txt3);margin-top:.18rem}
+.notif-empty{text-align:center;padding:1.8rem;color:var(--txt3);font-size:.82rem}
+
+/* ══ PAGES ══ */
+.page{display:none;padding:1.6rem 1.8rem 3.5rem;animation:fadeIn .28s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ PAGE HDR ══ */
+.ph{margin-bottom:1.5rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.ph-title{font-size:1.4rem;font-weight:800;color:var(--guinda);line-height:1.2}
+.ph-sub{font-size:.81rem;color:var(--txt2);margin-top:.28rem}
+.ph-actions{display:flex;gap:.6rem;align-items:center;flex-shrink:0}
+
+/* ══ KPI ══ */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.4rem}
+.kpi{background:#fff;border-radius:var(--r);padding:1.15rem 1.3rem;box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;border-top:3px solid var(--ac,var(--guinda))}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.kpi-lbl{font-size:.68rem;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.42rem}
+.kpi-val{font-size:2rem;font-weight:800;color:var(--ac,var(--guinda));line-height:1;font-family:'JetBrains Mono',monospace}
+.kpi-sub{font-size:.71rem;color:var(--txt2);margin-top:.32rem}
+.kpi-badge{display:inline-flex;align-items:center;padding:.17rem .55rem;border-radius:99px;font-size:.66rem;font-weight:700;margin-top:.42rem}
+.bg{background:#DCFCE7;color:#15803D}
+.ba{background:#FEF9C3;color:#92400E}
+.br{background:#FEE2E2;color:#991B1B}
+.bb{background:#DBEAFE;color:#1D4ED8}
+.bq{background:#F5EFE6;color:#6B1A2A}
+
+/* ══ GRIDS ══ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1rem}
+.span2{grid-column:span 2}
+
+/* ══ CARD ══ */
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.card-h{padding:.86rem 1.2rem;border-bottom:1px solid var(--gris2);display:flex;align-items:center;justify-content:space-between}
+.card-ht{font-size:.85rem;font-weight:700;color:var(--guinda)}
+.card-b{padding:1.1rem 1.2rem}
+
+/* ══ SECTION DIV ══ */
+.sdiv{display:flex;align-items:center;gap:.62rem;margin:1.4rem 0 .9rem}
+.sdiv-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.sdiv-t{font-size:.94rem;font-weight:800;color:var(--guinda)}
+.sdiv-line{flex:1;height:1px;background:var(--beige2)}
+
+/* ══ DIRECTOR HERO ══ */
+.dir-hero{background:linear-gradient(135deg,var(--guinda3) 0%,var(--guinda) 60%,var(--guinda2) 100%);border-radius:var(--r);padding:1.4rem 1.7rem;display:flex;align-items:center;gap:1.3rem;margin-bottom:1.4rem;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.dir-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:160px;height:160px;border-radius:50%;background:rgba(200,150,10,.08)}
+.dir-hero::after{content:'';position:absolute;right:80px;bottom:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04)}
+.dh-escudo{width:52px;height:52px;flex-shrink:0;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.dh-sep{width:1px;height:50px;background:rgba(255,255,255,.15);flex-shrink:0;position:relative;z-index:1}
+.dh-info{flex:1;position:relative;z-index:1}
+.dh-gov{color:rgba(255,255,255,.45);font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.18rem}
+.dh-nombre{color:#fff;font-size:1rem;font-weight:800;margin-bottom:.1rem;line-height:1.3}
+.dh-cargo{color:rgba(255,255,255,.55);font-size:.73rem;line-height:1.4}
+.dh-stats{display:flex;gap:1.6rem;position:relative;z-index:1;flex-shrink:0}
+.dh-stat{text-align:center}
+.dh-stat-v{font-size:1.5rem;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace;line-height:1}
+.dh-stat-l{font-size:.63rem;color:rgba(255,255,255,.42);margin-top:.13rem;white-space:nowrap}
+
+/* ══ AREA CARDS ══ */
+.area-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:1.05rem 1.15rem;border-top:3px solid var(--ac,var(--guinda));transition:transform .2s,box-shadow .2s;cursor:pointer}
+.area-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.area-ico-wrap{width:34px;height:34px;border-radius:9px;background:var(--ac,var(--guinda));display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-bottom:.7rem;opacity:.9}
+.area-name{font-weight:700;font-size:.84rem;color:var(--guinda);margin-bottom:.18rem;line-height:1.35}
+.area-dir{font-size:.7rem;color:var(--txt2);margin-bottom:.65rem;line-height:1.4}
+.area-pbar{height:5px;border-radius:99px;background:var(--beige2);overflow:hidden;margin-bottom:.5rem}
+.area-pfill{height:100%;border-radius:99px;background:var(--ac,var(--guinda));transition:width .9s}
+.area-stats{display:flex;gap:.8rem;flex-wrap:wrap}
+.area-stat{font-size:.68rem;color:var(--txt2)}
+.area-stat strong{color:var(--txt);font-weight:700}
+
+/* ══ PROJECTS ══ */
+.proj{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:1.05rem 1.15rem;transition:transform .2s,box-shadow .2s;border-left:4px solid var(--ac,var(--guinda))}
+.proj:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.38rem;gap:.5rem}
+.proj-name{font-weight:700;font-size:.87rem;color:var(--guinda);flex:1;line-height:1.35}
+.proj-est{padding:.17rem .55rem;border-radius:99px;font-size:.66rem;font-weight:700;flex-shrink:0}
+.proj-area{font-size:.69rem;color:var(--txt3);margin-bottom:.48rem}
+.proj-desc{font-size:.79rem;color:var(--txt2);margin-bottom:.72rem;line-height:1.55}
+.proj-prow{display:flex;justify-content:space-between;font-size:.71rem;margin-bottom:.25rem}
+.proj-track{height:8px;border-radius:99px;background:var(--beige2);overflow:hidden;margin-bottom:.65rem}
+.proj-fill{height:100%;border-radius:99px;transition:width .9s}
+.proj-foot{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:var(--txt3)}
+.proj-acts{display:flex;gap:.3rem}
+
+/* ══ ACTIVITIES ══ */
+.act{display:flex;align-items:flex-start;gap:.72rem;padding:.6rem 0;border-bottom:1px solid var(--gris)}
+.act:last-child{border-bottom:none}
+.act-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;margin-top:1px}
+.d-ok{background:#DCFCE7;color:#15803D}
+.d-wip{background:#DBEAFE;color:#1D4ED8}
+.d-pend{background:#FEF9C3;color:#92400E}
+.d-late{background:#FEE2E2;color:#991B1B}
+.act-body{flex:1}
+.act-txt{font-size:.82rem;color:var(--txt);line-height:1.45}
+.act-meta{font-size:.68rem;color:var(--txt3);margin-top:.14rem}
+.chip{display:inline-block;padding:.1rem .4rem;border-radius:4px;font-size:.64rem;font-weight:700;margin-left:.32rem}
+.ca{background:#FEE2E2;color:#991B1B}.cm{background:#FEF9C3;color:#92400E}.cb{background:#DCFCE7;color:#15803D}
+
+/* ══ REDES ══ */
+.red-card{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:transform .2s,box-shadow .2s}
+.red-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.red-h{padding:.82rem 1rem;display:flex;align-items:center;gap:.58rem}
+.red-nm{color:#fff;font-weight:700;font-size:.88rem}
+.red-body{background:#fff;padding:.88rem 1rem}
+.rbar{margin-bottom:.46rem}
+.rbar-lbl{display:flex;justify-content:space-between;font-size:.68rem;color:var(--txt2);margin-bottom:.18rem}
+.rbar-t{height:6px;border-radius:99px;background:var(--beige2);overflow:hidden}
+.rbar-f{height:100%;border-radius:99px;transition:width .8s}
+.red-tot{display:flex;justify-content:space-between;padding-top:.52rem;border-top:1px solid var(--beige2);margin-top:.32rem;font-size:.72rem}
+.red-tot-v{font-weight:700;font-family:'JetBrains Mono',monospace}
+
+/* ══ ACTAS ══ */
+.acta-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:1.05rem 1.15rem;border-left:4px solid var(--guinda);transition:transform .2s,box-shadow .2s}
+.acta-card:hover{transform:translateY(-1px);box-shadow:var(--sh2)}
+.acta-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.35rem;gap:.5rem}
+.acta-title{font-weight:700;font-size:.87rem;color:var(--guinda);flex:1;line-height:1.35}
+.acta-tipo{padding:.15rem .52rem;border-radius:99px;font-size:.65rem;font-weight:700;flex-shrink:0}
+.acta-meta{font-size:.7rem;color:var(--txt3);margin-bottom:.5rem;display:flex;gap:.8rem;flex-wrap:wrap}
+.acta-desc{font-size:.79rem;color:var(--txt2);margin-bottom:.65rem;line-height:1.5}
+.acta-acuerdos{margin-bottom:.65rem}
+.acta-acuerdos-title{font-size:.7rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.acuerdo-item{display:flex;align-items:flex-start;gap:.55rem;margin-bottom:.35rem;font-size:.78rem;color:var(--txt)}
+.acuerdo-num{width:20px;height:20px;border-radius:50%;background:var(--guinda);color:#fff;font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.acta-foot{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:var(--txt3)}
+
+/* ══ TABLE ══ */
+.tbl{width:100%;border-collapse:collapse;font-size:.8rem}
+.tbl th{background:var(--guinda3);color:#fff;padding:.57rem .88rem;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.tbl th:first-child{border-radius:8px 0 0 0}
+.tbl th:last-child{border-radius:0 8px 0 0}
+.tbl td{padding:.57rem .88rem;border-bottom:1px solid var(--gris2);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:var(--beige)}
+.rank{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;background:var(--guinda3);color:#fff;font-size:.68rem;font-weight:800}
+.r1{background:#C8960A}.r2{background:#6B7280}.r3{background:#92400E}
+
+/* ══ DONUT ══ */
+.donut-wrap{display:flex;align-items:center;gap:1.1rem}
+.dleg{display:flex;flex-direction:column;gap:.38rem;flex:1}
+.dleg-row{display:flex;align-items:center;gap:.42rem;font-size:.76rem}
+.dleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dleg-lbl{color:var(--txt2);flex:1}
+.dleg-v{font-weight:700;font-family:'JetBrains Mono',monospace}
+
+/* ══ PROGRESS ══ */
+.prog{margin-bottom:.82rem}
+.prog:last-child{margin-bottom:0}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:.26rem}
+.prog-name{font-size:.81rem;font-weight:500;color:var(--txt)}
+.prog-pct{font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--txt2)}
+.prog-track{height:7px;border-radius:99px;background:var(--beige2);overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+
+/* ══ MODAL ══ */
+.ov{position:fixed;inset:0;z-index:300;background:rgba(26,10,16,.6);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center}
+.ov.open{display:flex}
+.modal{background:#fff;border-radius:18px;width:min(95vw,640px);max-height:88vh;overflow-y:auto;box-shadow:var(--sh3);animation:slideUp .22s ease}
+.modal-h{padding:1.1rem 1.45rem;border-bottom:2px solid var(--beige2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:18px 18px 0 0;z-index:1}
+.modal-title{font-size:.96rem;font-weight:800;color:var(--guinda)}
+.modal-x{background:none;border:none;cursor:pointer;font-size:1.22rem;color:var(--txt3);padding:.2rem .42rem;border-radius:6px;line-height:1}
+.modal-x:hover{background:var(--beige2)}
+.modal-b{padding:1.25rem 1.45rem}
+.modal-f{padding:.88rem 1.45rem;border-top:1px solid var(--beige2);display:flex;justify-content:flex-end;gap:.62rem;position:sticky;bottom:0;background:#fff;border-radius:0 0 18px 18px}
+.field{margin-bottom:.88rem}
+.field label{display:block;font-size:.71rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.field input,.field select,.field textarea{width:100%;padding:.57rem .82rem;border-radius:var(--r2);border:1.5px solid var(--beige2);font-family:'Sora',sans-serif;font-size:.84rem;color:var(--txt);background:#fff;transition:border-color .2s}
+.field textarea{height:78px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--magenta)}
+.r2c{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.acuerdo-input-row{display:flex;gap:.5rem;margin-bottom:.5rem;align-items:center}
+.acuerdo-input-row input{flex:1;padding:.5rem .75rem;border-radius:var(--r2);border:1.5px solid var(--beige2);font-family:'Sora',sans-serif;font-size:.83rem}
+.acuerdo-input-row button{padding:.5rem .7rem;border-radius:var(--r2);border:none;cursor:pointer;background:var(--magenta);color:#fff;font-size:.8rem}
+
+/* ══ BUTTONS ══ */
+.btn{padding:.53rem 1.15rem;border-radius:var(--r2);border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:.81rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.btn-primary{background:var(--magenta);color:#fff}
+.btn-primary:hover{background:var(--magenta2)}
+.btn-secondary{background:var(--beige2);color:var(--txt2);border:1.5px solid var(--beige2)}
+.btn-secondary:hover{background:var(--beige)}
+.btn-danger{background:#B91C1C;color:#fff}
+.btn-dorado{background:var(--dorado);color:#fff}
+.btn-sm{padding:.3rem .68rem;font-size:.72rem}
+.btn-ico{padding:.34rem .62rem;font-size:.83rem}
+
+/* ══ FILTER BAR ══ */
+.fbar{display:flex;gap:.42rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.fbtn{padding:.34rem .85rem;border-radius:99px;border:1.5px solid var(--beige2);background:#fff;cursor:pointer;font-family:'Sora',sans-serif;font-size:.73rem;font-weight:600;color:var(--txt2);transition:all .17s}
+.fbtn.active{background:var(--magenta);color:#fff;border-color:var(--magenta)}
+.finput{padding:.34rem .78rem;border-radius:var(--r2);border:1.5px solid var(--beige2);font-family:'Sora',sans-serif;font-size:.78rem;color:var(--txt);background:#fff;flex:1;min-width:148px;max-width:230px}
+.finput:focus{outline:none;border-color:var(--magenta)}
+
+/* ══ ADMIN ══ */
+.adm-sec{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:1.1rem;overflow:hidden}
+.adm-sec-h{padding:.92rem 1.25rem;background:var(--guinda3);color:#fff;font-size:.84rem;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.adm-sec-b{padding:1.05rem 1.25rem}
+.adm-row{display:flex;align-items:center;gap:.75rem;padding:.58rem 0;border-bottom:1px solid var(--beige2)}
+.adm-row:last-child{border-bottom:none}
+.adm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.adm-info{flex:1}
+.adm-name{font-size:.84rem;font-weight:600;color:var(--txt)}
+.adm-sub{font-size:.7rem;color:var(--txt3);margin-top:.07rem}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;z-index:999;background:var(--magenta);color:#fff;padding:.72rem 1.25rem;border-radius:10px;font-size:.82rem;font-weight:600;box-shadow:var(--sh3);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ══ EMPTY ══ */
+.empty{text-align:center;padding:2.6rem 1rem;color:var(--txt3)}
+.empty-ico{font-size:2.6rem;margin-bottom:.55rem}
+.empty-t{font-size:.88rem;font-weight:600;color:var(--txt2);margin-bottom:.22rem}
+.empty-s{font-size:.77rem}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .sidebar{transform:translateX(-256px);transition:transform .3s}
+  .sidebar.open{transform:translateX(0)}
+  .content{margin-left:0}
+  .kpi-grid,.g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .g2{grid-template-columns:1fr}
+  .span2{grid-column:span 1}
+  .r2c{grid-template-columns:1fr}
+  .dh-stats{display:none}
+}
+@media(max-width:600px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .g3,.g2{grid-template-columns:1fr}
+  .page{padding:1.1rem .9rem 3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGO ATD OFICIAL (definición SVG reutilizable) ══ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="logo-atd" viewBox="0 0 200 80">
+    <!-- Asterisco estilizado ATD -->
+    <g transform="translate(38,40)">
+      <!-- Rama central horizontal gruesa -->
+      <rect x="-22" y="-5.5" width="44" height="11" rx="5.5" fill="#C41472"/>
+      <!-- Rama vertical -->
+      <rect x="-5.5" y="-22" width="11" height="44" rx="5.5" fill="#C41472"/>
+      <!-- Rama diagonal izq-arr / der-abj -->
+      <rect x="-22" y="-5.5" width="44" height="11" rx="5.5" fill="#C41472" transform="rotate(45)"/>
+      <!-- Rama diagonal der-arr / izq-abj -->
+      <rect x="-22" y="-5.5" width="44" height="11" rx="5.5" fill="#C41472" transform="rotate(-45)"/>
+      <!-- Círculo central -->
+      <circle cx="0" cy="0" r="7" fill="#C41472"/>
+      <!-- 3 puntos pequeños arriba-derecha del asterisco (del logo original) -->
+      <circle cx="18" cy="-18" r="3.5" fill="#C41472"/>
+      <circle cx="25" cy="-10" r="2.5" fill="#C41472"/>
+      <circle cx="14" cy="-26" r="2" fill="#C41472"/>
+    </g>
+    <!-- Línea divisoria vertical -->
+    <line x1="82" y1="10" x2="82" y2="70" stroke="#C41472" stroke-width="2"/>
+    <!-- Letras ATD -->
+    <text x="92" y="54" font-family="'Sora',sans-serif" font-size="36" font-weight="800" fill="#C41472" letter-spacing="2">ATD</text>
+    <!-- Texto institucional -->
+    <text x="93" y="65" font-family="'Sora',sans-serif" font-size="7.2" font-weight="500" fill="#8A3A60" letter-spacing=".5">AGENCIA DE TRANSFORMACIÓN</text>
+    <text x="93" y="73" font-family="'Sora',sans-serif" font-size="7.2" font-weight="500" fill="#8A3A60" letter-spacing=".5">DIGITAL DEL ESTADO</text>
+    <text x="93" y="79" font-family="'Sora',sans-serif" font-size="7" font-weight="500" fill="#8A3A60" letter-spacing=".5">DE QUINTANA ROO</text>
+  </symbol>
+  <!-- Versión compacta solo asterisco para espacios pequeños -->
+  <symbol id="logo-atd-ico" viewBox="0 0 80 80">
+    <g transform="translate(40,40)">
+      <rect x="-24" y="-6" width="48" height="12" rx="6" fill="#C41472"/>
+      <rect x="-6" y="-24" width="12" height="48" rx="6" fill="#C41472"/>
+      <rect x="-24" y="-6" width="48" height="12" rx="6" fill="#C41472" transform="rotate(45)"/>
+      <rect x="-24" y="-6" width="48" height="12" rx="6" fill="#C41472" transform="rotate(-45)"/>
+      <circle cx="0" cy="0" r="8" fill="#C41472"/>
+      <circle cx="20" cy="-20" r="4" fill="#C41472"/>
+      <circle cx="27" cy="-11" r="2.8" fill="#C41472"/>
+      <circle cx="15" cy="-28" r="2.2" fill="#C41472"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginScreen">
+  <div class="login-bg"></div>
+  <div class="login-dots"></div>
+  <div class="login-card">
+    <div class="login-top">
+      <svg class="login-escudo" viewBox="0 0 80 80" style="width:72px;height:72px;margin:0 auto 1rem;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.35))"><use href="#logo-atd-ico"/></svg>
+      <div class="login-gov">Gobierno del Estado de Quintana Roo</div>
+      <div class="login-title">Agencia de Transformación Digital</div>
+      <div class="login-sub">Portal Institucional · Secretaría Técnica · ST-ATD.MX</div>
+    </div>
+    <div class="login-body">
+      <label class="login-lbl">Dirección / Área</label>
+      <select class="login-sel" id="loginArea">
+        <option value="">— Selecciona tu área —</option>
+        <option value="secTec">Secretaría Técnica</option>
+        <option value="gobDig">Dir. Gobierno Digital</option>
+        <option value="transAg">Dir. Transformación y Agenda Digital</option>
+        <option value="simpAdm">Dir. Simplificación Administrativa</option>
+        <option value="bueReg">Dir. Análisis y Buenas Prácticas Regulatorias</option>
+        <option value="plan">Dir. Planeación</option>
+        <option value="vinc">Dir. Vinculación y Atención Ciudadana</option>
+        <option value="jur">Dir. Jurídica y Unidad de Transparencia</option>
+        <option value="adm">Dir. Administrativa y de Archivo</option>
+      </select>
+      <label class="login-lbl">Contraseña</label>
+      <input class="login-inp" id="loginPass" type="password" placeholder="Contraseña de acceso">
+      <button class="login-btn" onclick="doLogin()">Ingresar al portal →</button>
+      <div class="login-err" id="loginErr">Credenciales incorrectas.</div>
+      <div class="login-hint">Demo: contraseña <strong>atd2026</strong> para todas las áreas</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-header">
+      <svg class="sb-escudo" viewBox="0 0 80 80"><use href="#logo-atd-ico"/></svg>
+      <div class="sb-brand">
+        <div class="sb-brand-name">Portal Institucional ATD</div>
+        <div class="sb-brand-state">Quintana Roo · 2026</div>
+      </div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-user-tag" id="sbTag">Área</div>
+      <div class="sb-user-name" id="sbName">—</div>
+      <div class="sb-user-sub" id="sbSub">Agencia de Transformación Digital</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-grp">Principal</div>
+      <button class="sb-lnk active" onclick="navTo('inicio',this)"><span class="sb-ico">🏠</span>Inicio</button>
+      <button class="sb-lnk" onclick="navTo('dashboard',this)"><span class="sb-ico">📊</span>Dashboard</button>
+      <div class="sb-grp">Gestión</div>
+      <button class="sb-lnk" onclick="navTo('proyectos',this)"><span class="sb-ico">🗂️</span>Proyectos</button>
+      <button class="sb-lnk" onclick="navTo('actividades',this)"><span class="sb-ico">✅</span>Actividades</button>
+      <button class="sb-lnk" id="sb-actas" onclick="navTo('actas',this)"><span class="sb-ico">📄</span>Actas y Minutas</button>
+      <div class="sb-grp">Comunicación</div>
+      <button class="sb-lnk" onclick="navTo('redes',this)"><span class="sb-ico">📱</span>Redes Sociales</button>
+      <div class="sb-grp admin-only" id="sb-adm-grp" style="display:none">Administración</div>
+      <button class="sb-lnk admin-only" id="sb-adm-btn" style="display:none" onclick="navTo('admin',this)"><span class="sb-ico">⚙️</span>Panel de Admin</button>
+    </nav>
+    <div class="sb-footer">
+      <button class="sb-logout" onclick="doLogout()"><span>🚪</span>Cerrar sesión</button>
+      <div class="sb-ver">ST-ATD.MX · v3.0 · 2026</div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <header class="topbar">
+      <div class="tb-l">
+        <span class="tb-page" id="tbPage">Inicio</span>
+        <span class="tb-sep">·</span>
+        <span class="tb-area" id="tbArea">ATD Quintana Roo</span>
+      </div>
+      <div class="tb-r">
+        <div class="tb-live"><div class="tb-dot"></div>En vivo</div>
+        <span class="tb-date" id="tbDate"></span>
+        <button class="tb-notif-btn" onclick="toggleNotif()" id="notifBtn">
+          🔔<span class="tb-notif-count" id="notifCount" style="display:none">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- NOTIF PANEL -->
+    <div class="notif-panel" id="notifPanel">
+      <div class="notif-head">
+        <span class="notif-title">🔔 Notificaciones</span>
+        <button class="notif-clear" onclick="clearNotifs()">Marcar todas como leídas</button>
+      </div>
+      <div class="notif-list" id="notifList"></div>
+    </div>
+
+    <!-- ────── INICIO ────── -->
+    <div class="page active" id="page-inicio">
+      <div id="heroWrap"></div>
+      <div class="kpi-grid" id="ini-kpis"></div>
+      <div class="sdiv"><div class="sdiv-ico" style="background:#F5EFE6">🏢</div><span class="sdiv-t">Estado de las Direcciones</span><div class="sdiv-line"></div></div>
+      <div class="g3" id="ini-areas" style="margin-bottom:1.4rem"></div>
+      <div class="sdiv"><div class="sdiv-ico" style="background:#FFF7ED">📌</div><span class="sdiv-t">Proyectos Recientes</span><div class="sdiv-line"></div></div>
+      <div class="g3" id="ini-recientes"></div>
+    </div>
+
+    <!-- ────── DASHBOARD ────── -->
+    <div class="page" id="page-dashboard">
+      <div class="ph"><div><div class="ph-title">Dashboard Ejecutivo 📊</div><div class="ph-sub">Estadísticas consolidadas · Actualización en tiempo real</div></div></div>
+      <div class="kpi-grid" id="dash-kpis"></div>
+      <div class="g2">
+        <div class="card"><div class="card-h"><span class="card-ht">Avance por dirección</span></div><div class="card-b" id="dash-avance"></div></div>
+        <div class="card"><div class="card-h"><span class="card-ht">Proyectos por estado</span></div><div class="card-b"><div class="donut-wrap"><svg width="108" height="108" viewBox="0 0 108 108" id="dash-donut"></svg><div class="dleg" id="dash-donut-leg"></div></div></div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h"><span class="card-ht">Actividades por período</span></div><div class="card-b" id="dash-act"></div></div>
+        <div class="card"><div class="card-h"><span class="card-ht">Participación en redes</span></div><div class="card-b" id="dash-redes"></div></div>
+      </div>
+    </div>
+
+    <!-- ────── PROYECTOS ────── -->
+    <div class="page" id="page-proyectos">
+      <div class="ph">
+        <div><div class="ph-title">Proyectos Institucionales 🗂️</div><div class="ph-sub">Cada dirección registra y actualiza el avance de sus proyectos</div></div>
+        <div class="ph-actions"><button class="btn btn-primary" onclick="openModal('mProy')">+ Nuevo proyecto</button></div>
+      </div>
+      <div class="fbar">
+        <input class="finput" id="srchProy" placeholder="🔍 Buscar…" oninput="renderProys()">
+        <button class="fbtn active" onclick="fProy('Todos',this)">Todos</button>
+        <button class="fbtn" onclick="fProy('En tiempo',this)">En tiempo</button>
+        <button class="fbtn" onclick="fProy('En revisión',this)">En revisión</button>
+        <button class="fbtn" onclick="fProy('Con retraso',this)">Con retraso</button>
+        <button class="fbtn" onclick="fProy('Completado',this)">Completados</button>
+      </div>
+      <div class="g3" id="proy-grid"></div>
+    </div>
+
+    <!-- ────── ACTIVIDADES ────── -->
+    <div class="page" id="page-actividades">
+      <div class="ph">
+        <div><div class="ph-title">Actividades y Seguimiento ✅</div><div class="ph-sub">Control diario, semanal y mensual de la Secretaría Técnica</div></div>
+        <div class="ph-actions"><button class="btn btn-primary" onclick="openModal('mAct')">+ Nueva actividad</button></div>
+      </div>
+      <div class="fbar">
+        <input class="finput" id="srchAct" placeholder="🔍 Buscar…" oninput="renderActs()">
+        <button class="fbtn active" onclick="fAct('Todos',this)">Todas</button>
+        <button class="fbtn" onclick="fAct('Hoy',this)">Hoy</button>
+        <button class="fbtn" onclick="fAct('Semana',this)">Semana</button>
+        <button class="fbtn" onclick="fAct('Mes',this)">Mes</button>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h"><span class="card-ht">Lista de actividades</span></div><div class="card-b" id="act-list"></div></div>
+        <div class="card"><div class="card-h"><span class="card-ht">Avance por período</span></div><div class="card-b" id="act-prog"></div></div>
+      </div>
+    </div>
+
+    <!-- ────── ACTAS ────── -->
+    <div class="page" id="page-actas">
+      <div class="ph">
+        <div><div class="ph-title">Actas y Minutas 📄</div><div class="ph-sub">Registro oficial de sesiones, acuerdos y seguimiento de compromisos</div></div>
+        <div class="ph-actions"><button class="btn btn-primary" onclick="openModal('mActa')">+ Nueva acta</button></div>
+      </div>
+      <div class="fbar">
+        <input class="finput" id="srchActa" placeholder="🔍 Buscar acta…" oninput="renderActas()">
+        <button class="fbtn active" onclick="fActa('Todos',this)">Todas</button>
+        <button class="fbtn" onclick="fActa('Sesión Ordinaria',this)">Ord.</button>
+        <button class="fbtn" onclick="fActa('Sesión Extraordinaria',this)">Extr.</button>
+        <button class="fbtn" onclick="fActa('Reunión de Trabajo',this)">Reunión</button>
+        <button class="fbtn" onclick="fActa('Minuta',this)">Minutas</button>
+      </div>
+      <div class="g3" id="actas-grid"></div>
+    </div>
+
+    <!-- ────── REDES ────── -->
+    <div class="page" id="page-redes">
+      <div class="ph">
+        <div><div class="ph-title">Redes Sociales 📱</div><div class="ph-sub">Seguimiento de participación institucional del personal</div></div>
+        <div class="ph-actions"><button class="btn btn-primary" onclick="openModal('mRedes')">✏️ Actualizar</button></div>
+      </div>
+      <div class="g4" id="redes-cards"></div>
+      <div class="g2" style="margin-top:1rem">
+        <div class="card"><div class="card-h"><span class="card-ht">Ranking del personal</span></div><div class="card-b" style="padding:0"><table class="tbl"><thead><tr><th>#</th><th>Colaborador/a</th><th>Reac.</th><th>Com.</th><th>Comp.</th><th>Total</th></tr></thead><tbody id="ranking-body"></tbody></table></div></div>
+        <div class="card"><div class="card-h"><span class="card-ht">Distribución por red</span></div><div class="card-b"><div class="donut-wrap"><svg width="108" height="108" viewBox="0 0 108 108" id="redes-donut"></svg><div class="dleg" id="redes-donut-leg"></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- ────── ADMIN ────── -->
+    <div class="page" id="page-admin">
+      <div class="ph"><div><div class="ph-title">Panel de Administración ⚙️</div><div class="ph-sub">Gestión de usuarios y configuración del portal · Solo Secretaría Técnica</div></div></div>
+      <div class="g2">
+        <div class="adm-sec">
+          <div class="adm-sec-h">👤 Directoras y Directores <button class="btn btn-sm btn-dorado" onclick="openModal('mArea')">✏️ Editar</button></div>
+          <div class="adm-sec-b" id="adm-areas"></div>
+        </div>
+        <div class="adm-sec">
+          <div class="adm-sec-h">🔐 Usuarios del sistema</div>
+          <div class="adm-sec-b" id="adm-users"></div>
+        </div>
+      </div>
+      <div class="adm-sec">
+        <div class="adm-sec-h">📊 Resumen del sistema</div>
+        <div class="adm-sec-b" id="adm-stats"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- Proyecto -->
+<div class="ov" id="mProy">
+  <div class="modal">
+    <div class="modal-h"><span class="modal-title" id="mProyTit">Nuevo Proyecto</span><button class="modal-x" onclick="closeModal('mProy')">✕</button></div>
+    <div class="modal-b">
+      <div class="field"><label>Nombre del proyecto</label><input id="p-nom" placeholder="Título del proyecto"></div>
+      <div class="r2c">
+        <div class="field"><label>Dirección</label>
+          <select id="p-area"><option value="Secretaría Técnica">Secretaría Técnica</option><option value="Gobierno Digital">Gobierno Digital</option><option value="Transformación Digital">Transformación Digital</option><option value="Simplificación Administrativa">Simplificación Administrativa</option><option value="Buenas Prácticas">Buenas Prácticas</option><option value="Planeación">Planeación</option><option value="Vinculación">Vinculación</option><option value="Jurídica">Jurídica</option><option value="Administrativa">Administrativa</option></select>
+        </div>
+        <div class="field"><label>Estado</label>
+          <select id="p-est"><option>En tiempo</option><option>En revisión</option><option>Con retraso</option><option>Completado</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Descripción</label><textarea id="p-desc" placeholder="Objetivo y alcance"></textarea></div>
+      <div class="r2c">
+        <div class="field"><label>Avance (%)</label><input id="p-av" type="number" min="0" max="100" value="0"></div>
+        <div class="field"><label>Fecha límite</label><input id="p-fecha" type="date"></div>
+      </div>
+      <div class="field"><label>Director responsable</label><input id="p-dir" placeholder="Nombre completo"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-secondary" onclick="closeModal('mProy')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProy()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Actividad -->
+<div class="ov" id="mAct">
+  <div class="modal">
+    <div class="modal-h"><span class="modal-title">Nueva Actividad</span><button class="modal-x" onclick="closeModal('mAct')">✕</button></div>
+    <div class="modal-b">
+      <div class="field"><label>Actividad</label><input id="a-txt" placeholder="Descripción"></div>
+      <div class="r2c">
+        <div class="field"><label>Período</label><select id="a-per"><option>Hoy</option><option>Semana</option><option>Mes</option></select></div>
+        <div class="field"><label>Prioridad</label><select id="a-pri"><option>Alta</option><option>Media</option><option>Baja</option></select></div>
+      </div>
+      <div class="r2c">
+        <div class="field"><label>Área</label><select id="a-area"><option value="Secretaría Técnica">Secretaría Técnica</option><option value="Gobierno Digital">Gobierno Digital</option><option value="Transformación Digital">Transformación Digital</option><option value="Simplificación Administrativa">Simplificación Administrativa</option><option value="Buenas Prácticas">Buenas Prácticas</option><option value="Planeación">Planeación</option><option value="Vinculación">Vinculación</option><option value="Jurídica">Jurídica</option><option value="Administrativa">Administrativa</option></select></div>
+        <div class="field"><label>Estado</label><select id="a-est"><option>Pendiente</option><option>En proceso</option><option>Completada</option></select></div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-secondary" onclick="closeModal('mAct')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveAct()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Acta -->
+<div class="ov" id="mActa">
+  <div class="modal">
+    <div class="modal-h"><span class="modal-title" id="mActaTit">Nueva Acta / Minuta</span><button class="modal-x" onclick="closeModal('mActa')">✕</button></div>
+    <div class="modal-b">
+      <div class="field"><label>Título del acta</label><input id="ac-titulo" placeholder="Ej: Sesión Ordinaria No. 3 — ATD QR"></div>
+      <div class="r2c">
+        <div class="field"><label>Tipo</label><select id="ac-tipo"><option>Sesión Ordinaria</option><option>Sesión Extraordinaria</option><option>Reunión de Trabajo</option><option>Minuta</option></select></div>
+        <div class="field"><label>Fecha de sesión</label><input id="ac-fecha" type="date"></div>
+      </div>
+      <div class="r2c">
+        <div class="field"><label>Área convocante</label><select id="ac-area"><option value="Secretaría Técnica">Secretaría Técnica</option><option value="Gobierno Digital">Gobierno Digital</option><option value="Transformación Digital">Transformación Digital</option><option value="Simplificación Administrativa">Simplificación Administrativa</option><option value="Buenas Prácticas">Buenas Prácticas</option><option value="Planeación">Planeación</option><option value="Vinculación">Vinculación</option><option value="Jurídica">Jurídica</option><option value="Administrativa">Administrativa</option></select></div>
+        <div class="field"><label>Estado</label><select id="ac-est"><option>Pendiente de firma</option><option>Firmada</option><option>En seguimiento</option><option>Cerrada</option></select></div>
+      </div>
+      <div class="field"><label>Asistentes</label><input id="ac-asistentes" placeholder="Ej: M.E. Javier Ayuso Sánchez, Lic. Edgar Rivera Galera…"></div>
+      <div class="field"><label>Descripción / Puntos tratados</label><textarea id="ac-desc" placeholder="Resumen de los temas tratados en la sesión"></textarea></div>
+      <div class="field">
+        <label>Acuerdos</label>
+        <div id="acuerdos-lista"></div>
+        <div class="acuerdo-input-row">
+          <input id="ac-nuevo-acuerdo" placeholder="Escribe un acuerdo y presiona +" onkeydown="if(event.key==='Enter')addAcuerdo()">
+          <button onclick="addAcuerdo()" title="Agregar acuerdo">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-secondary" onclick="closeModal('mActa')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveActa()">💾 Guardar acta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Redes -->
+<div class="ov" id="mRedes">
+  <div class="modal">
+    <div class="modal-h"><span class="modal-title">Actualizar Redes Sociales</span><button class="modal-x" onclick="closeModal('mRedes')">✕</button></div>
+    <div class="modal-b" id="mRedesBody"></div>
+    <div class="modal-f">
+      <button class="btn btn-secondary" onclick="closeModal('mRedes')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveRedes()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Editar Área (admin) -->
+<div class="ov" id="mArea">
+  <div class="modal">
+    <div class="modal-h"><span class="modal-title">Editar Dirección</span><button class="modal-x" onclick="closeModal('mArea')">✕</button></div>
+    <div class="modal-b">
+      <div class="field"><label>Dirección</label><select id="ea-area" onchange="loadAreaEdit()"></select></div>
+      <div class="field"><label>Nombre del Director/a</label><input id="ea-dir" placeholder="Nombre completo con grado académico"></div>
+      <div class="field"><label>Cargo completo</label><input id="ea-cargo" placeholder="Ej: Director/a de Gobierno Digital"></div>
+      <div class="field"><label>Nueva contraseña (dejar vacío para no cambiar)</label><input id="ea-pass" type="text" placeholder="Nueva contraseña"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-secondary" onclick="closeModal('mArea')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveArea()">💾 Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════════
+   DATOS INSTITUCIONALES REALES — ATD QUINTANA ROO
+════════════════════════════════════════════════════ */
+const USERS = {
+  secTec:  { name:'Secretaría Técnica', dir:'Lic. Edgar José Rivera Galera',               role:'Secretario Técnico',                                             pass:'atd2026', isAdmin:true,  areaKey:'Secretaría Técnica' },
+  gobDig:  { name:'Dir. Gobierno Digital', dir:'Mtro. Geovanny Alejandro Basto Cabrera', role:'Director de Gobierno Digital',                                   pass:'atd2026', isAdmin:false, areaKey:'Gobierno Digital' },
+  transAg: { name:'Dir. Transformación Digital', dir:'Ing. Dulce Gabriela Hernández Esquivel', role:'Directora de Transformación Digital y Agenda Digital',     pass:'atd2026', isAdmin:false, areaKey:'Transformación Digital' },
+  simpAdm: { name:'Dir. Simplificación Administrativa', dir:'Lic. Judith Areli Cornelio Ramos', role:'Directora de Simplificación Administrativa',              pass:'atd2026', isAdmin:false, areaKey:'Simplificación Administrativa' },
+  bueReg:  { name:'Dir. Buenas Prácticas', dir:'Lic. Alejandra del Carmen Buenfil Pech', role:'Directora de Análisis y Buenas Prácticas Regulatorias',          pass:'atd2026', isAdmin:false, areaKey:'Buenas Prácticas' },
+  plan:    { name:'Dir. Planeación', dir:'Lic. Manuel Andrés Hernández Contreras',        role:'Director de Planeación',                                         pass:'atd2026', isAdmin:false, areaKey:'Planeación' },
+  vinc:    { name:'Dir. Vinculación', dir:'Mtra. Karla Elizabeth Suárez Osorio',          role:'Directora de Vinculación y Atención Ciudadana',                  pass:'atd2026', isAdmin:false, areaKey:'Vinculación' },
+  jur:     { name:'Dir. Jurídica', dir:'Lic. Juan Antonio Alcocer Basto',                 role:'Director Jurídico y Unidad de Transparencia',                    pass:'atd2026', isAdmin:false, areaKey:'Jurídica' },
+  adm:     { name:'Dir. Administrativa', dir:'Lic. Jorge Alberto Uc Ángulo',              role:'Director Administrativo y de Archivo',                           pass:'atd2026', isAdmin:false, areaKey:'Administrativa' },
+};
+
+let AREAS = [
+  { key:'Secretaría Técnica',            dir:'Lic. Edgar José Rivera Galera',              cargo:'Secretario Técnico',                                      color:'#6B1A2A', ico:'🏛️' },
+  { key:'Gobierno Digital',              dir:'Mtro. Geovanny Alejandro Basto Cabrera',     cargo:'Director de Gobierno Digital',                            color:'#1A4A7A', ico:'💻' },
+  { key:'Transformación Digital',        dir:'Ing. Dulce Gabriela Hernández Esquivel',     cargo:'Directora de Transformación Digital y Agenda Digital',    color:'#0E7490', ico:'🚀' },
+  { key:'Simplificación Administrativa', dir:'Lic. Judith Areli Cornelio Ramos',           cargo:'Directora de Simplificación Administrativa',               color:'#1E6B3A', ico:'📋' },
+  { key:'Buenas Prácticas',              dir:'Lic. Alejandra del Carmen Buenfil Pech',     cargo:'Directora de Análisis y Buenas Prácticas Regulatorias',   color:'#C8960A', ico:'⚖️' },
+  { key:'Planeación',                    dir:'Lic. Manuel Andrés Hernández Contreras',     cargo:'Director de Planeación',                                  color:'#7B2D8B', ico:'📐' },
+  { key:'Vinculación',                   dir:'Mtra. Karla Elizabeth Suárez Osorio',        cargo:'Directora de Vinculación y Atención Ciudadana',            color:'#0E7490', ico:'🤝' },
+  { key:'Jurídica',                      dir:'Lic. Juan Antonio Alcocer Basto',            cargo:'Director Jurídico y Unidad de Transparencia',             color:'#8B1A2A', ico:'⚖️' },
+  { key:'Administrativa',                dir:'Lic. Jorge Alberto Uc Ángulo',               cargo:'Director Administrativo y de Archivo',                    color:'#2D6A3F', ico:'🗄️' },
+];
+
+let DB = {
+  proyectos:[
+    {id:1,nombre:'Gobierno Digital Ciudadano QR',area:'Gobierno Digital',estado:'En tiempo',desc:'Plataforma unificada de servicios en línea para ciudadanos del estado.',avance:60,fecha:'2026-09-30',dir:'Mtro. Geovanny Alejandro Basto Cabrera'},
+    {id:2,nombre:'Agenda Digital QR 2026-2030',area:'Transformación Digital',estado:'En tiempo',desc:'Diseño e implementación de la Agenda de Transformación Digital del Estado.',avance:45,fecha:'2026-12-31',dir:'Ing. Dulce Gabriela Hernández Esquivel'},
+    {id:3,nombre:'Reingeniería de Trámites Prioritarios',area:'Simplificación Administrativa',estado:'En revisión',desc:'Digitalización de los 30 trámites de mayor demanda ciudadana.',avance:35,fecha:'2026-07-31',dir:'Lic. Judith Areli Cornelio Ramos'},
+    {id:4,nombre:'Marco Regulatorio Digital',area:'Buenas Prácticas',estado:'En tiempo',desc:'Actualización del marco normativo estatal para adopción de tecnología.',avance:50,fecha:'2026-08-15',dir:'Lic. Alejandra del Carmen Buenfil Pech'},
+    {id:5,nombre:'Plan Estratégico ATD 2026',area:'Planeación',estado:'Completado',desc:'Plan estratégico institucional con objetivos, metas e indicadores.',avance:100,fecha:'2026-03-31',dir:'Lic. Manuel Andrés Hernández Contreras'},
+    {id:6,nombre:'Estrategia de Comunicación Digital',area:'Secretaría Técnica',estado:'En tiempo',desc:'Plan de presencia institucional en redes sociales y canales digitales.',avance:70,fecha:'2026-06-30',dir:'Lic. Edgar José Rivera Galera'},
+  ],
+  actividades:[
+    {id:1,texto:'Stand-up diario del equipo (08:00 h)',periodo:'Hoy',prioridad:'Alta',area:'Secretaría Técnica',estado:'Completada'},
+    {id:2,texto:'Monitoreo de redes sociales institucionales',periodo:'Hoy',prioridad:'Alta',area:'Secretaría Técnica',estado:'Completada'},
+    {id:3,texto:'Envío de alerta de publicaciones al personal',periodo:'Hoy',prioridad:'Alta',area:'Secretaría Técnica',estado:'Completada'},
+    {id:4,texto:'Asesoría al M.E. Javier Ayuso Sánchez — preparación de materiales ejecutivos',periodo:'Hoy',prioridad:'Alta',area:'Secretaría Técnica',estado:'Pendiente'},
+    {id:5,texto:'Reunión de planeación semanal con directores de área',periodo:'Semana',prioridad:'Alta',area:'Secretaría Técnica',estado:'Completada'},
+    {id:6,texto:'Reporte semanal de avance de proyectos al Director General',periodo:'Semana',prioridad:'Alta',area:'Secretaría Técnica',estado:'Pendiente'},
+    {id:7,texto:'Verificación de participación del personal en redes sociales',periodo:'Semana',prioridad:'Media',area:'Secretaría Técnica',estado:'Pendiente'},
+    {id:8,texto:'Elaboración del informe ejecutivo mensual',periodo:'Mes',prioridad:'Alta',area:'Secretaría Técnica',estado:'Pendiente'},
+    {id:9,texto:'Reporte estadístico de redes sociales al Director General',periodo:'Mes',prioridad:'Alta',area:'Secretaría Técnica',estado:'Pendiente'},
+  ],
+  actas:[
+    {id:1,titulo:'Sesión Ordinaria No. 1 — ATD Quintana Roo',tipo:'Sesión Ordinaria',fecha:'2026-01-15',area:'Secretaría Técnica',estado:'Firmada',asistentes:'M.E. Javier Ayuso Sánchez, Lic. Edgar Rivera Galera, Mtro. Basto Cabrera, Ing. Hernández Esquivel, Lic. Cornelio Ramos, Lic. Buenfil Pech, Lic. Hernández Contreras, Mtra. Suárez Osorio, Lic. Alcocer Basto, Lic. Uc Ángulo',desc:'Primera sesión ordinaria de la ATD. Se presentaron los planes de trabajo de cada dirección y se aprobó el programa institucional para el primer trimestre 2026.',acuerdos:['Aprobar el Programa Institucional ATD 2026','Cada dirección entregará su plan de trabajo en 15 días hábiles','Establecer sesiones ordinarias mensuales los primeros viernes de cada mes']},
+    {id:2,titulo:'Reunión de Trabajo — Agenda Digital QR',tipo:'Reunión de Trabajo',fecha:'2026-02-10',area:'Transformación Digital',estado:'En seguimiento',asistentes:'Ing. Dulce Hernández Esquivel, Lic. Manuel Hernández Contreras, Lic. Edgar Rivera Galera',desc:'Reunión para revisar el avance del proyecto de Agenda Digital y definir los lineamientos técnicos para el periodo 2026-2030.',acuerdos:['Integrar diagnóstico de infraestructura digital estatal','Consultar con municipios los requerimientos de conectividad','Presentar borrador de Agenda Digital en sesión de marzo']},
+    {id:3,titulo:'Sesión Ordinaria No. 2 — ATD Quintana Roo',tipo:'Sesión Ordinaria',fecha:'2026-02-14',area:'Secretaría Técnica',estado:'Firmada',asistentes:'Pleno de directores ATD',desc:'Segunda sesión ordinaria. Se revisaron avances del primer mes de operación y se aprobaron ajustes al plan de trabajo institucional.',acuerdos:['Avalar informe de actividades enero 2026','Aprobar calendario de capacitación interna','Definir indicadores de desempeño por dirección']},
+  ],
+  redes:[
+    {nombre:'Facebook',   color:'1877F2',ico:'📘',reacciones:87,comentarios:34,compartidos:56,meta:80},
+    {nombre:'Instagram',  color:'C13584',ico:'📸',reacciones:92,comentarios:28,compartidos:0, meta:80},
+    {nombre:'X (Twitter)',color:'2C3E50',ico:'✖️',reacciones:65,comentarios:18,compartidos:41,meta:80},
+    {nombre:'TikTok',     color:'1A1A2E',ico:'🎵',reacciones:78,comentarios:12,compartidos:0, meta:80},
+  ],
+  personal:[
+    {nombre:'Colaborador/a 1',reacciones:0,comentarios:0,compartidos:0},
+    {nombre:'Colaborador/a 2',reacciones:0,comentarios:0,compartidos:0},
+    {nombre:'Colaborador/a 3',reacciones:0,comentarios:0,compartidos:0},
+    {nombre:'Colaborador/a 4',reacciones:0,comentarios:0,compartidos:0},
+    {nombre:'Colaborador/a 5',reacciones:0,comentarios:0,compartidos:0},
+  ],
+};
+
+let NOTIFS = [
+  {id:1,msg:'Proyecto "Plan Estratégico ATD 2026" marcado como Completado',time:'Hoy 09:14',ico:'✅',color:'#1E6B3A',read:false},
+  {id:2,msg:'Nueva acta registrada: Sesión Ordinaria No. 3',time:'Hoy 08:30',ico:'📄',color:'#6B1A2A',read:false},
+  {id:3,msg:'3 actividades pendientes de alta prioridad para hoy',time:'Hoy 08:00',ico:'⚠️',color:'#C8960A',read:false},
+];
+
+let currentUser=null, nextId=300, fProyState='Todos', fActState='Todos', fActaState='Todos', editProyId=null, editActaId=null;
+let tempAcuerdos=[];
+
+/* ── AUTH ── */
+function doLogin(){
+  const area=document.getElementById('loginArea').value;
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr');
+  if(!area){err.style.display='block';err.textContent='Selecciona tu área.';return}
+  if(!USERS[area]||pass!==USERS[area].pass){err.style.display='block';err.textContent='Credenciales incorrectas.';return}
+  currentUser={...USERS[area],key:area};
+  err.style.display='none';
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('sbName').textContent=currentUser.dir;
+  document.getElementById('sbTag').textContent=currentUser.role;
+  document.getElementById('tbArea').textContent=currentUser.name;
+  if(currentUser.isAdmin){document.getElementById('sb-adm-grp').style.display='block';document.getElementById('sb-adm-btn').style.display='block';}
+  updateDate(); updateNotifBadge(); renderAll();
+  addNotif('🏛️','Bienvenido/a, '+currentUser.dir.split(' ').slice(-2).join(' '),'Acceso exitoso al portal','#C41472');
+}
+function doLogout(){
+  currentUser=null;
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginPass').value='';
+  document.getElementById('loginArea').value='';
+  document.getElementById('sb-adm-grp').style.display='none';
+  document.getElementById('sb-adm-btn').style.display='none';
+  document.getElementById('notifPanel').classList.remove('open');
+}
+
+/* ── NAV ── */
+const PNAMES={inicio:'Inicio',dashboard:'Dashboard',proyectos:'Proyectos',actividades:'Actividades',actas:'Actas y Minutas',redes:'Redes Sociales',admin:'Administración'};
+function navTo(p,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.sb-lnk').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  if(btn)btn.classList.add('active');
+  document.getElementById('tbPage').textContent=PNAMES[p]||p;
+  document.getElementById('notifPanel').classList.remove('open');
+  if(p==='inicio')renderInicio();
+  if(p==='dashboard')renderDashboard();
+  if(p==='proyectos')renderProys();
+  if(p==='actividades')renderActs();
+  if(p==='actas')renderActas();
+  if(p==='redes')renderRedes();
+  if(p==='admin')renderAdmin();
+}
+function renderAll(){renderInicio();renderDashboard();renderProys();renderActs();renderActas();renderRedes();}
+
+/* ── DATE ── */
+function updateDate(){document.getElementById('tbDate').textContent=new Date().toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+setInterval(updateDate,60000);
+
+/* ── NOTIFICATIONS ── */
+function addNotif(ico,msg,sub,color){
+  NOTIFS.unshift({id:nextId++,msg:(sub?msg+' · '+sub:msg),time:'Ahora',ico,color,read:false});
+  if(NOTIFS.length>20)NOTIFS.pop();
+  updateNotifBadge();
+}
+function updateNotifBadge(){
+  const unread=NOTIFS.filter(n=>!n.read).length;
+  const badge=document.getElementById('notifCount');
+  const sbBadge=document.getElementById('sb-actas');
+  badge.style.display=unread>0?'block':'none';
+  badge.textContent=unread>9?'9+':unread;
+}
+function toggleNotif(){
+  const panel=document.getElementById('notifPanel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open'))renderNotifs();
+}
+function renderNotifs(){
+  const list=document.getElementById('notifList');
+  if(!NOTIFS.length){list.innerHTML='<div class="notif-empty">Sin notificaciones</div>';return}
+  list.innerHTML=NOTIFS.map(n=>`
+    <div class="notif-item ${n.read?'':'unread'}" onclick="markRead(${n.id})">
+      <div class="notif-ico" style="background:${n.color}20">${n.ico}</div>
+      <div class="notif-info"><div class="notif-msg">${n.msg}</div><div class="notif-time">${n.time}</div></div>
+    </div>`).join('');
+}
+function markRead(id){const n=NOTIFS.find(x=>x.id===id);if(n)n.read=true;renderNotifs();updateNotifBadge();}
+function clearNotifs(){NOTIFS.forEach(n=>n.read=true);renderNotifs();updateNotifBadge();}
+document.addEventListener('click',e=>{if(!e.target.closest('#notifPanel')&&!e.target.closest('#notifBtn'))document.getElementById('notifPanel').classList.remove('open');});
+
+/* ── INICIO ── */
+function renderInicio(){
+  const tot=DB.proyectos.length,comp=DB.proyectos.filter(p=>p.estado==='Completado').length,ret=DB.proyectos.filter(p=>p.estado==='Con retraso').length;
+  const aOk=DB.actividades.filter(a=>a.estado==='Completada').length,aTot=DB.actividades.length||1;
+  const rTot=DB.redes.reduce((s,r)=>s+r.reacciones+r.comentarios+r.compartidos,0);
+  document.getElementById('heroWrap').innerHTML=`
+    <div class="dir-hero">
+      <svg class="dh-escudo" viewBox="0 0 80 80"><use href="#logo-atd-ico"/></svg>
+      <div class="dh-sep"></div>
+      <div class="dh-info">
+        <div class="dh-gov">Director General · Agencia de Transformación Digital · Gobierno de Quintana Roo</div>
+        <div class="dh-nombre">M.E. Javier Abraham Ayuso Sánchez</div>
+        <div class="dh-cargo">Portal administrado por la Secretaría Técnica · Lic. Edgar José Rivera Galera · ST-ATD.MX</div>
+      </div>
+      <div class="dh-stats">
+        <div class="dh-stat"><div class="dh-stat-v">${tot}</div><div class="dh-stat-l">Proyectos</div></div>
+        <div class="dh-stat"><div class="dh-stat-v">${AREAS.length}</div><div class="dh-stat-l">Direcciones</div></div>
+        <div class="dh-stat"><div class="dh-stat-v">${DB.actas.length}</div><div class="dh-stat-l">Actas</div></div>
+        <div class="dh-stat"><div class="dh-stat-v">${aOk}</div><div class="dh-stat-l">Act. OK</div></div>
+      </div>
+    </div>`;
+  document.getElementById('ini-kpis').innerHTML=`
+    <div class="kpi" style="--ac:#6B1A2A"><div class="kpi-lbl">Proyectos registrados</div><div class="kpi-val">${tot}</div><div class="kpi-sub">${comp} completados · ${ret} con retraso</div><span class="kpi-badge ${ret>0?'ba':'bg'}">${ret>0?ret+' en riesgo':'Sin retrasos'}</span></div>
+    <div class="kpi" style="--ac:#1E6B3A"><div class="kpi-lbl">Actividades completadas</div><div class="kpi-val">${aOk}</div><div class="kpi-sub">de ${aTot} programadas</div><span class="kpi-badge bb">${Math.round(aOk/aTot*100)}% completado</span></div>
+    <div class="kpi" style="--ac:#C8960A"><div class="kpi-lbl">Actas registradas</div><div class="kpi-val">${DB.actas.length}</div><div class="kpi-sub">${DB.actas.filter(a=>a.estado==='Firmada').length} firmadas · ${DB.actas.filter(a=>a.estado==='En seguimiento').length} en seguimiento</div><span class="kpi-badge bq">Ver actas</span></div>
+    <div class="kpi" style="--ac:#1A4A7A"><div class="kpi-lbl">Acciones en redes</div><div class="kpi-val">${rTot}</div><div class="kpi-sub">Total semana · 4 redes</div><span class="kpi-badge bg">↑ Activo</span></div>`;
+  document.getElementById('ini-areas').innerHTML=AREAS.map(a=>{
+    const ps=DB.proyectos.filter(p=>p.area===a.key);
+    const pct=ps.length?Math.round(ps.reduce((s,p)=>s+p.avance,0)/ps.length):0;
+    return `<div class="area-card" style="--ac:${a.color}">
+      <div class="area-ico-wrap">${a.ico}</div>
+      <div class="area-name">${a.key}</div>
+      <div class="area-dir">${a.dir}<br><span style="color:var(--txt3);font-size:.66rem">${a.cargo}</span></div>
+      <div class="area-pbar"><div class="area-pfill" style="width:${pct}%;background:${a.color}"></div></div>
+      <div class="area-stats">
+        <div class="area-stat">Proyectos: <strong>${ps.length}</strong></div>
+        <div class="area-stat">Avance: <strong>${pct}%</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('ini-recientes').innerHTML=[...DB.proyectos].sort((a,b)=>b.id-a.id).slice(0,3).map(p=>proyHTML(p)).join('');
+}
+
+/* ── DASHBOARD ── */
+function renderDashboard(){
+  const tot=DB.proyectos.length||1,comp=DB.proyectos.filter(p=>p.estado==='Completado').length;
+  const enT=DB.proyectos.filter(p=>p.estado==='En tiempo').length,rev=DB.proyectos.filter(p=>p.estado==='En revisión').length,ret=DB.proyectos.filter(p=>p.estado==='Con retraso').length;
+  const avg=Math.round(DB.proyectos.reduce((s,p)=>s+p.avance,0)/tot);
+  const aOk=DB.actividades.filter(a=>a.estado==='Completada').length,aTot=DB.actividades.length||1;
+  const rTot=DB.redes.reduce((s,r)=>s+r.reacciones+r.comentarios+r.compartidos,0);
+  document.getElementById('dash-kpis').innerHTML=`
+    <div class="kpi" style="--ac:#6B1A2A"><div class="kpi-lbl">Avance promedio</div><div class="kpi-val">${avg}%</div><div class="kpi-sub">Sobre ${tot} proyectos</div></div>
+    <div class="kpi" style="--ac:#1E6B3A"><div class="kpi-lbl">Tasa actividades</div><div class="kpi-val">${Math.round(aOk/aTot*100)}%</div><div class="kpi-sub">${aOk} de ${aTot} completadas</div></div>
+    <div class="kpi" style="--ac:#0E7490"><div class="kpi-lbl">Acciones redes</div><div class="kpi-val">${rTot}</div><div class="kpi-sub">Esta semana · 4 redes</div></div>
+    <div class="kpi" style="--ac:#B91C1C"><div class="kpi-lbl">Con retraso</div><div class="kpi-val">${ret}</div><div class="kpi-sub">Proyectos fuera de plan</div><span class="kpi-badge ${ret>0?'br':'bg'}">${ret>0?'Atención requerida':'Sin riesgos'}</span></div>`;
+  document.getElementById('dash-avance').innerHTML=AREAS.map(a=>{
+    const ps=DB.proyectos.filter(p=>p.area===a.key);
+    const pct=ps.length?Math.round(ps.reduce((s,p)=>s+p.avance,0)/ps.length):0;
+    return `<div class="prog"><div class="prog-row"><span class="prog-name">${a.ico} ${a.key}</span><span class="prog-pct">${pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${a.color}"></div></div></div>`;
+  }).join('');
+  renderDonut('dash-donut','dash-donut-leg',[{l:'En tiempo',v:enT,c:'#1E6B3A'},{l:'En revisión',v:rev,c:'#C8960A'},{l:'Con retraso',v:ret,c:'#8B1A2A'},{l:'Completado',v:comp,c:'#1A4A7A'}]);
+  document.getElementById('dash-act').innerHTML=['Hoy','Semana','Mes'].map((per,i)=>{
+    const t=DB.actividades.filter(a=>a.periodo===per).length||1,ok=DB.actividades.filter(a=>a.periodo===per&&a.estado==='Completada').length;
+    const pct=Math.round(ok/t*100),c=pct>=75?'#1E6B3A':pct>=40?'#C8960A':'#8B1A2A';
+    return `<div class="prog"><div class="prog-row"><span class="prog-name">${per}</span><span class="prog-pct">${ok}/${t} — ${pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div></div>`;
+  }).join('');
+  const maxR=Math.max(...DB.redes.map(r=>r.reacciones+r.comentarios+r.compartidos),1);
+  document.getElementById('dash-redes').innerHTML=DB.redes.map(r=>{
+    const t=r.reacciones+r.comentarios+r.compartidos;
+    return `<div class="prog"><div class="prog-row"><span class="prog-name">${r.ico} ${r.nombre}</span><span class="prog-pct">${t} acc.</span></div><div class="prog-track"><div class="prog-fill" style="width:${Math.round(t/maxR*100)}%;background:#${r.color}"></div></div></div>`;
+  }).join('');
+}
+
+/* ── PROYECTOS ── */
+const EC={Completado:'#1A4A7A','En tiempo':'#1E6B3A','En revisión':'#C8960A','Con retraso':'#8B1A2A'};
+const EB={Completado:'bb','En tiempo':'bg','En revisión':'ba','Con retraso':'br'};
+function fProy(s,btn){fProyState=s;document.querySelectorAll('#page-proyectos .fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderProys();}
+function proyHTML(p){
+  const c=EC[p.estado]||'#6B1A2A',canEdit=currentUser&&(currentUser.isAdmin||currentUser.areaKey===p.area);
+  return `<div class="proj" style="--ac:${c}">
+    <div class="proj-top"><div class="proj-name">${p.nombre}</div><span class="proj-est kpi-badge ${EB[p.estado]}">${p.estado}</span></div>
+    <div class="proj-area">${p.area} · ${p.dir||''}</div>
+    <div class="proj-desc">${p.desc}</div>
+    <div class="proj-prow"><span style="font-size:.71rem;color:var(--txt2)">Avance</span><span style="font-weight:800;font-family:'JetBrains Mono',monospace;font-size:.75rem">${p.avance}%</span></div>
+    <div class="proj-track"><div class="proj-fill" style="width:${p.avance}%;background:${c}"></div></div>
+    <div class="proj-foot"><span>📅 ${p.fecha||'—'}</span>${canEdit?`<div class="proj-acts"><button class="btn btn-sm btn-secondary btn-ico" onclick="editProy(${p.id})">✏️</button><button class="btn btn-sm btn-danger btn-ico" onclick="delProy(${p.id})">🗑️</button></div>`:''}</div>
+  </div>`;
+}
+function renderProys(){
+  const s=(document.getElementById('srchProy')?.value||'').toLowerCase();
+  const list=DB.proyectos.filter(p=>(fProyState==='Todos'||p.estado===fProyState)&&(p.nombre.toLowerCase().includes(s)||p.area.toLowerCase().includes(s)));
+  document.getElementById('proy-grid').innerHTML=list.length?list.map(p=>proyHTML(p)).join(''):`<div class="empty" style="grid-column:span 3"><div class="empty-ico">🗂️</div><div class="empty-t">Sin proyectos</div><div class="empty-s">Agrega el primer proyecto</div></div>`;
+}
+function saveProy(){
+  const nom=document.getElementById('p-nom').value.trim();
+  if(!nom){showToast('⚠️ Ingresa el nombre','#C8960A');return}
+  const o={id:editProyId||nextId++,nombre:nom,area:document.getElementById('p-area').value,estado:document.getElementById('p-est').value,desc:document.getElementById('p-desc').value.trim(),avance:+document.getElementById('p-av').value||0,fecha:document.getElementById('p-fecha').value,dir:document.getElementById('p-dir').value.trim()};
+  if(editProyId){const i=DB.proyectos.findIndex(p=>p.id===editProyId);if(i>-1)DB.proyectos[i]=o;editProyId=null;document.getElementById('mProyTit').textContent='Nuevo Proyecto';}
+  else{DB.proyectos.push(o);addNotif('🗂️','Nuevo proyecto registrado',o.nombre,'#1A4A7A');}
+  closeModal('mProy');renderProys();renderInicio();renderDashboard();
+  showToast('✅ Proyecto guardado');
+}
+function editProy(id){
+  const p=DB.proyectos.find(x=>x.id===id);if(!p)return;
+  editProyId=id;document.getElementById('mProyTit').textContent='Editar Proyecto';
+  document.getElementById('p-nom').value=p.nombre;document.getElementById('p-desc').value=p.desc;document.getElementById('p-dir').value=p.dir||'';
+  document.getElementById('p-area').value=p.area;document.getElementById('p-est').value=p.estado;
+  document.getElementById('p-av').value=p.avance;document.getElementById('p-fecha').value=p.fecha||'';
+  openModal('mProy');
+}
+function delProy(id){
+  if(!confirm('¿Eliminar este proyecto?'))return;
+  DB.proyectos=DB.proyectos.filter(p=>p.id!==id);
+  renderProys();renderInicio();renderDashboard();showToast('🗑️ Eliminado','#8B1A2A');
+}
+
+/* ── ACTIVIDADES ── */
+function fAct(s,btn){fActState=s;document.querySelectorAll('#page-actividades .fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderActs();}
+function renderActs(){
+  const s=(document.getElementById('srchAct')?.value||'').toLowerCase();
+  const list=DB.actividades.filter(a=>(fActState==='Todos'||a.periodo===fActState)&&(a.texto.toLowerCase().includes(s)||a.area.toLowerCase().includes(s)));
+  const canEdit=currentUser?.isAdmin;
+  document.getElementById('act-list').innerHTML=list.length?list.map(a=>{
+    const dc=a.estado==='Completada'?'d-ok':a.estado==='En proceso'?'d-wip':a.estado==='Con retraso'?'d-late':'d-pend';
+    const di=a.estado==='Completada'?'✓':a.estado==='En proceso'?'◷':'·';
+    const pc=a.prioridad==='Alta'?'ca':a.prioridad==='Media'?'cm':'cb';
+    return `<div class="act"><div class="act-dot ${dc}">${di}</div><div class="act-body"><div class="act-txt">${a.texto}<span class="chip ${pc}">${a.prioridad}</span></div><div class="act-meta">${a.area} · ${a.periodo} · ${a.estado}</div></div>${canEdit?`<div style="display:flex;gap:.28rem;flex-shrink:0"><button class="btn btn-sm btn-secondary btn-ico" onclick="toggleAct(${a.id})" title="Cambiar estado">⟳</button><button class="btn btn-sm btn-danger btn-ico" onclick="delAct(${a.id})">🗑️</button></div>`:''}</div>`;
+  }).join(''):`<div class="empty"><div class="empty-ico">✅</div><div class="empty-t">Sin actividades</div></div>`;
+  document.getElementById('act-prog').innerHTML=['Hoy','Semana','Mes'].map((per,i)=>{
+    const t=DB.actividades.filter(a=>a.periodo===per).length||1,ok=DB.actividades.filter(a=>a.periodo===per&&a.estado==='Completada').length;
+    const pct=Math.round(ok/t*100);
+    return `<div class="prog"><div class="prog-row"><span class="prog-name">${per}</span><span class="prog-pct">${ok}/${t} — ${pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${['#6B1A2A','#8B2438','#1E6B3A'][i]}"></div></div></div>`;
+  }).join('');
+}
+function saveAct(){
+  const txt=document.getElementById('a-txt').value.trim();
+  if(!txt){showToast('⚠️ Ingresa la actividad','#C8960A');return}
+  DB.actividades.push({id:nextId++,texto:txt,periodo:document.getElementById('a-per').value,prioridad:document.getElementById('a-pri').value,area:document.getElementById('a-area').value,estado:document.getElementById('a-est').value});
+  closeModal('mAct');document.getElementById('a-txt').value='';
+  renderActs();renderInicio();renderDashboard();showToast('✅ Actividad guardada');
+}
+function toggleAct(id){
+  const a=DB.actividades.find(x=>x.id===id);if(!a)return;
+  const s=['Pendiente','En proceso','Completada'];a.estado=s[(s.indexOf(a.estado)+1)%3];
+  renderActs();renderDashboard();
+}
+function delAct(id){if(!confirm('¿Eliminar?'))return;DB.actividades=DB.actividades.filter(a=>a.id!==id);renderActs();renderDashboard();showToast('🗑️ Eliminada','#8B1A2A');}
+
+/* ── ACTAS ── */
+function fActa(s,btn){fActaState=s;document.querySelectorAll('#page-actas .fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderActas();}
+function actaHTML(a){
+  const estColor={Firmada:'#1E6B3A','En seguimiento':'#C8960A','Pendiente de firma':'#8B1A2A',Cerrada:'#1A4A7A'};
+  const estBadge={Firmada:'bg','En seguimiento':'ba','Pendiente de firma':'br',Cerrada:'bb'};
+  const canEdit=currentUser?.isAdmin;
+  return `<div class="acta-card">
+    <div class="acta-top">
+      <div class="acta-title">${a.titulo}</div>
+      <span class="acta-tipo kpi-badge ${estBadge[a.estado]||'ba'}" style="background:${estColor[a.estado]||'#C8960A'}20;color:${estColor[a.estado]||'#C8960A'}">${a.estado}</span>
+    </div>
+    <div class="acta-meta">
+      <span>📅 ${a.fecha}</span>
+      <span>📁 ${a.tipo}</span>
+      <span>🏢 ${a.area}</span>
+    </div>
+    <div class="acta-desc">${a.desc}</div>
+    ${a.acuerdos&&a.acuerdos.length?`<div class="acta-acuerdos">
+      <div class="acta-acuerdos-title">Acuerdos (${a.acuerdos.length})</div>
+      ${a.acuerdos.map((ac,i)=>`<div class="acuerdo-item"><div class="acuerdo-num">${i+1}</div><span>${ac}</span></div>`).join('')}
+    </div>`:''}
+    <div class="acta-foot">
+      <span>👥 ${(a.asistentes||'').split(',').length} asistentes</span>
+      ${canEdit?`<div style="display:flex;gap:.3rem"><button class="btn btn-sm btn-secondary btn-ico" onclick="editActa(${a.id})">✏️</button><button class="btn btn-sm btn-danger btn-ico" onclick="delActa(${a.id})">🗑️</button></div>`:''}
+    </div>
+  </div>`;
+}
+function renderActas(){
+  const s=(document.getElementById('srchActa')?.value||'').toLowerCase();
+  const list=DB.actas.filter(a=>(fActaState==='Todos'||a.tipo===fActaState)&&(a.titulo.toLowerCase().includes(s)||a.area.toLowerCase().includes(s)));
+  document.getElementById('actas-grid').innerHTML=list.length?list.map(a=>actaHTML(a)).join(''):`<div class="empty" style="grid-column:span 3"><div class="empty-ico">📄</div><div class="empty-t">Sin actas registradas</div><div class="empty-s">Registra la primera acta o minuta</div></div>`;
+}
+function addAcuerdo(){
+  const inp=document.getElementById('ac-nuevo-acuerdo');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  tempAcuerdos.push(txt);inp.value='';
+  renderAcuerdosForm();
+}
+function renderAcuerdosForm(){
+  document.getElementById('acuerdos-lista').innerHTML=tempAcuerdos.map((ac,i)=>`
+    <div class="acuerdo-item" style="margin-bottom:.35rem">
+      <div class="acuerdo-num">${i+1}</div>
+      <span style="flex:1;font-size:.8rem">${ac}</span>
+      <button onclick="removeAcuerdo(${i})" style="background:none;border:none;cursor:pointer;color:#8B1A2A;font-size:.85rem">✕</button>
+    </div>`).join('');
+}
+function removeAcuerdo(i){tempAcuerdos.splice(i,1);renderAcuerdosForm();}
+function saveActa(){
+  const titulo=document.getElementById('ac-titulo').value.trim();
+  if(!titulo){showToast('⚠️ Ingresa el título','#C8960A');return}
+  const o={id:editActaId||nextId++,titulo,tipo:document.getElementById('ac-tipo').value,fecha:document.getElementById('ac-fecha').value,area:document.getElementById('ac-area').value,estado:document.getElementById('ac-est').value,asistentes:document.getElementById('ac-asistentes').value.trim(),desc:document.getElementById('ac-desc').value.trim(),acuerdos:[...tempAcuerdos]};
+  if(editActaId){const i=DB.actas.findIndex(a=>a.id===editActaId);if(i>-1)DB.actas[i]=o;editActaId=null;document.getElementById('mActaTit').textContent='Nueva Acta / Minuta';}
+  else{DB.actas.push(o);addNotif('📄','Nueva acta registrada',titulo,'#6B1A2A');}
+  closeModal('mActa');renderActas();renderInicio();renderDashboard();
+  showToast('✅ Acta guardada');
+}
+function editActa(id){
+  const a=DB.actas.find(x=>x.id===id);if(!a)return;
+  editActaId=id;document.getElementById('mActaTit').textContent='Editar Acta';
+  document.getElementById('ac-titulo').value=a.titulo;document.getElementById('ac-tipo').value=a.tipo;
+  document.getElementById('ac-fecha').value=a.fecha||'';document.getElementById('ac-area').value=a.area;
+  document.getElementById('ac-est').value=a.estado;document.getElementById('ac-asistentes').value=a.asistentes||'';
+  document.getElementById('ac-desc').value=a.desc||'';
+  tempAcuerdos=[...(a.acuerdos||[])];renderAcuerdosForm();
+  openModal('mActa');
+}
+function delActa(id){if(!confirm('¿Eliminar esta acta?'))return;DB.actas=DB.actas.filter(a=>a.id!==id);renderActas();renderInicio();showToast('🗑️ Acta eliminada','#8B1A2A');}
+
+/* ── REDES ── */
+function renderRedes(){
+  document.getElementById('redes-cards').innerHTML=DB.redes.map(r=>{
+    const t=r.reacciones+r.comentarios+r.compartidos,pR=Math.round(r.reacciones/(t||1)*100),pC=Math.round(r.comentarios/(t||1)*100),pS=Math.round(r.compartidos/(t||1)*100);
+    return `<div class="red-card">
+      <div class="red-h" style="background:#${r.color}"><span style="font-size:1.2rem">${r.ico}</span><span class="red-nm">${r.nombre}</span></div>
+      <div class="red-body">
+        <div class="rbar"><div class="rbar-lbl"><span>Reacciones</span><span>${r.reacciones}</span></div><div class="rbar-t"><div class="rbar-f" style="width:${pR}%;background:#${r.color}"></div></div></div>
+        <div class="rbar"><div class="rbar-lbl"><span>Comentarios</span><span>${r.comentarios}</span></div><div class="rbar-t"><div class="rbar-f" style="width:${pC}%;background:#${r.color}88"></div></div></div>
+        ${r.compartidos>0?`<div class="rbar"><div class="rbar-lbl"><span>Compartidos</span><span>${r.compartidos}</span></div><div class="rbar-t"><div class="rbar-f" style="width:${pS}%;background:#${r.color}55"></div></div></div>`:''}
+        <div class="red-tot"><span style="color:var(--txt2)">Total</span><span class="red-tot-v">${t}</span></div>
+        <div style="margin-top:.42rem"><span class="kpi-badge ${r.reacciones>=r.meta?'bg':'ba'}" style="font-size:.66rem">${r.reacciones>=r.meta?'✅ Meta':'⚠️ Meta: '+r.meta}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+  const sorted=[...DB.personal].sort((a,b)=>(b.reacciones+b.comentarios+b.compartidos)-(a.reacciones+a.comentarios+a.compartidos));
+  document.getElementById('ranking-body').innerHTML=sorted.map((p,i)=>{
+    const t=p.reacciones+p.comentarios+p.compartidos;
+    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'';
+    return `<tr><td><span class="rank ${rc}">${i+1}</span></td><td><strong>${p.nombre}</strong></td><td>${p.reacciones}</td><td>${p.comentarios}</td><td>${p.compartidos}</td><td><strong style="color:var(--magenta)">${t}</strong></td></tr>`;
+  }).join('');
+  renderDonut('redes-donut','redes-donut-leg',DB.redes.map(r=>({l:r.nombre,v:r.reacciones+r.comentarios+r.compartidos,c:'#'+r.color})));
+}
+function openModalRedes(){
+  document.getElementById('mRedesBody').innerHTML=
+    DB.redes.map((r,i)=>`<div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--beige2)">
+      <div style="font-weight:700;margin-bottom:.55rem;font-size:.84rem">${r.ico} ${r.nombre}</div>
+      <div class="r2c">
+        <div class="field"><label>Reacciones</label><input id="re-${i}-r" type="number" value="${r.reacciones}"></div>
+        <div class="field"><label>Comentarios</label><input id="re-${i}-c" type="number" value="${r.comentarios}"></div>
+      </div>
+      <div class="r2c">
+        <div class="field"><label>Compartidos</label><input id="re-${i}-s" type="number" value="${r.compartidos}"></div>
+        <div class="field"><label>Meta</label><input id="re-${i}-m" type="number" value="${r.meta}"></div>
+      </div></div>`).join('')+
+    `<div style="font-weight:700;margin-bottom:.7rem;font-size:.84rem">👥 Personal</div>`+
+    DB.personal.map((p,i)=>`
+      <div class="r2c" style="margin-bottom:.4rem">
+        <div class="field"><label>Nombre ${i+1}</label><input id="pe-${i}-n" value="${p.nombre}"></div>
+        <div class="field"><label>Reacciones</label><input id="pe-${i}-r" type="number" value="${p.reacciones}"></div>
+      </div>
+      <div class="r2c" style="margin-bottom:.8rem">
+        <div class="field"><label>Comentarios</label><input id="pe-${i}-c" type="number" value="${p.comentarios}"></div>
+        <div class="field"><label>Compartidos</label><input id="pe-${i}-s" type="number" value="${p.compartidos}"></div>
+      </div>`).join('');
+}
+function saveRedes(){
+  DB.redes.forEach((r,i)=>{r.reacciones=+document.getElementById(`re-${i}-r`).value||0;r.comentarios=+document.getElementById(`re-${i}-c`).value||0;r.compartidos=+document.getElementById(`re-${i}-s`).value||0;r.meta=+document.getElementById(`re-${i}-m`).value||80;});
+  DB.personal.forEach((p,i)=>{p.nombre=document.getElementById(`pe-${i}-n`).value;p.reacciones=+document.getElementById(`pe-${i}-r`).value||0;p.comentarios=+document.getElementById(`pe-${i}-c`).value||0;p.compartidos=+document.getElementById(`pe-${i}-s`).value||0;});
+  closeModal('mRedes');renderRedes();renderDashboard();showToast('✅ Redes actualizadas');
+}
+
+/* ── ADMIN ── */
+function renderAdmin(){
+  if(!currentUser?.isAdmin)return;
+  document.getElementById('adm-areas').innerHTML=AREAS.map(a=>`
+    <div class="adm-row">
+      <div class="adm-dot" style="background:${a.color}"></div>
+      <div class="adm-info"><div class="adm-name">${a.ico} ${a.key}</div><div class="adm-sub">${a.dir} · ${a.cargo}</div></div>
+      <button class="btn btn-sm btn-secondary" onclick="quickEdit('${a.key}')">✏️</button>
+    </div>`).join('');
+  document.getElementById('adm-users').innerHTML=Object.values(USERS).map(u=>`
+    <div class="adm-row">
+      <div class="adm-dot" style="background:${u.isAdmin?'#6B1A2A':'#1E6B3A'}"></div>
+      <div class="adm-info"><div class="adm-name">${u.dir}</div><div class="adm-sub">${u.role}</div></div>
+      <span class="kpi-badge ${u.isAdmin?'br':'bg'}" style="font-size:.66rem">${u.isAdmin?'Admin':'Director'}</span>
+    </div>`).join('');
+  document.getElementById('adm-stats').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center">
+      ${[['Proyectos',DB.proyectos.length,'#6B1A2A'],['Completados',DB.proyectos.filter(p=>p.estado==='Completado').length,'#1E6B3A'],['Actas',DB.actas.length,'#C8960A'],['Actividades',DB.actividades.length,'#1A4A7A']].map(([l,v,c])=>`<div><div style="font-size:1.8rem;font-weight:800;color:${c};font-family:'JetBrains Mono',monospace">${v}</div><div style="font-size:.74rem;color:var(--txt2)">${l}</div></div>`).join('')}
+    </div>`;
+}
+function quickEdit(key){
+  const sel=document.getElementById('ea-area');
+  sel.innerHTML=AREAS.map(a=>`<option value="${a.key}" ${a.key===key?'selected':''}>${a.key}</option>`).join('');
+  loadAreaEdit();openModal('mArea');
+}
+function loadAreaEdit(){
+  const key=document.getElementById('ea-area').value,a=AREAS.find(x=>x.key===key);
+  if(a){document.getElementById('ea-dir').value=a.dir;document.getElementById('ea-cargo').value=a.cargo;}
+  document.getElementById('ea-pass').value='';
+}
+function saveArea(){
+  const key=document.getElementById('ea-area').value,dir=document.getElementById('ea-dir').value.trim(),cargo=document.getElementById('ea-cargo').value.trim(),pass=document.getElementById('ea-pass').value.trim();
+  const ai=AREAS.findIndex(a=>a.key===key);
+  if(ai>-1){if(dir)AREAS[ai].dir=dir;if(cargo)AREAS[ai].cargo=cargo;}
+  const uk=Object.keys(USERS).find(k=>USERS[k].areaKey===key);
+  if(uk){if(dir){USERS[uk].dir=dir;}if(pass)USERS[uk].pass=pass;}
+  closeModal('mArea');renderAdmin();renderInicio();
+  showToast('✅ Área actualizada');
+}
+
+/* ── DONUT ── */
+function renderDonut(svgId,legId,items){
+  const total=items.reduce((s,i)=>s+i.v,0)||1,cx=54,cy=54,ro=46,ri=28;
+  let start=-Math.PI/2,paths='';
+  items.forEach(it=>{
+    const slice=(it.v/total)*2*Math.PI,end=start+slice;
+    const x1=cx+ro*Math.cos(start),y1=cy+ro*Math.sin(start),x2=cx+ro*Math.cos(end),y2=cy+ro*Math.sin(end);
+    const ix1=cx+ri*Math.cos(end),iy1=cy+ri*Math.sin(end),ix2=cx+ri*Math.cos(start),iy2=cy+ri*Math.sin(start);
+    const lg=slice>Math.PI?1:0;
+    paths+=`<path d="M${x1},${y1} A${ro},${ro} 0 ${lg},1 ${x2},${y2} L${ix1},${iy1} A${ri},${ri} 0 ${lg},0 ${ix2},${iy2} Z" fill="${it.c}" opacity=".88"/>`;
+    start=end;
+  });
+  const svgEl=document.getElementById(svgId);if(svgEl)svgEl.innerHTML=paths;
+  const legEl=document.getElementById(legId);if(legEl)legEl.innerHTML=items.map(it=>`<div class="dleg-row"><div class="dleg-dot" style="background:${it.c}"></div><span class="dleg-lbl">${it.l}</span><span class="dleg-v">${Math.round(it.v/total*100)}%</span></div>`).join('');
+}
+
+/* ── MODAL ── */
+function openModal(id){
+  if(id==='mProy'&&!editProyId){['p-nom','p-desc','p-dir'].forEach(f=>{const el=document.getElementById(f);if(el)el.value=''});document.getElementById('p-av').value='0';document.getElementById('mProyTit').textContent='Nuevo Proyecto';if(currentUser&&!currentUser.isAdmin){const m={gobDig:'Gobierno Digital',transAg:'Transformación Digital',simpAdm:'Simplificación Administrativa',bueReg:'Buenas Prácticas',plan:'Planeación',vinc:'Vinculación',jur:'Jurídica',adm:'Administrativa'};const sel=document.getElementById('p-area');if(sel&&m[currentUser.key])sel.value=m[currentUser.key];document.getElementById('p-dir').value=currentUser.dir||'';}}
+  if(id==='mActa'&&!editActaId){['ac-titulo','ac-asistentes','ac-desc'].forEach(f=>{const el=document.getElementById(f);if(el)el.value=''});tempAcuerdos=[];renderAcuerdosForm();}
+  if(id==='mRedes')openModalRedes();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');if(id==='mProy')editProyId=null;if(id==='mActa'){editActaId=null;tempAcuerdos=[];}}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+
+/* ── TOAST ── */
+function showToast(msg,bg){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg||'var(--magenta)';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+/* ── INIT ── */
+updateDate();
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+</script>
+</body>
+</html>
