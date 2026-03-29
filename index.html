@@ -1162,7 +1162,7 @@ function renderInicio(){
   document.getElementById('ini-areas').innerHTML=areasMostrar.map(a=>{
     const ps=DB.proyectos.filter(p=>p.area===a.key);
     const pct=ps.length?Math.round(ps.reduce((s,p)=>s+p.avance,0)/ps.length):0;
-    return `<div class="area-card" style="--ac:${a.color};cursor:pointer" onclick="goProyectos('Todos',this.dataset.area)" data-area="${a.key}" title="Ver proyectos de ${a.key}">
+    return `<div class="area-card" style="--ac:${a.color};cursor:pointer" onclick="goProyectos(&quot;Todos&quot;,this.dataset.area)" data-area="${a.key}" title="Ver proyectos de ${a.key}">
       <div class="area-ico-wrap">${a.ico}</div>
       <div class="area-name">${a.key}</div>
       <div class="area-dir">${a.dir}<br><span style="color:var(--txt3);font-size:.66rem">${a.cargo}</span></div>
@@ -1176,6 +1176,15 @@ function renderInicio(){
   }).join('');
   const recLbl=document.getElementById('sdiv-recientes-lbl');
   if(recLbl) recLbl.textContent=isAdmin()?'Proyectos Recientes':'Mis Proyectos Recientes';
+  // Hacer kpi actividades clickeable si es admin
+  setTimeout(()=>{
+    const kpiAct = document.getElementById('kpi-act-box');
+    if(kpiAct && isAdmin()){
+      kpiAct.classList.add('kpi-link');
+      kpiAct.onclick = goActividades;
+      kpiAct.title = 'Ver actividades';
+    }
+  }, 50);
   document.getElementById('ini-recientes').innerHTML=[...proysFiltrados].sort((a,b)=>b.id-a.id).slice(0,3).map(p=>proyHTML(p)).join('') || '<div class="empty"><div class="empty-ico">🗂️</div><div class="empty-t">Sin proyectos aún</div><div class="empty-s">Agrega el primer proyecto de tu área</div></div>';
 }
 
@@ -1196,37 +1205,37 @@ function renderDashboard(){
   const qbDash = document.getElementById('dash-quick-bar');
   if(qbDash){
     const adminDash = isAdmin() ? `
-      <button class="qa-btn qa-btn-ambar" onclick="goProyectos('Con retraso','')">⚠️ Con retraso</button>
-      <button class="qa-btn qa-btn-azul" onclick="goProyectos('En revisión','')">🔍 En revisión</button>
-      <button class="qa-btn qa-btn-verde" onclick="goActas('Sesión Ordinaria')">📄 Sesiones ordinarias</button>
-      ${isAdmin()?'<button class="qa-btn qa-btn-guinda" onclick="goActividades('Hoy')">✅ Act. de hoy</button>':''}
+      <button class="qa-btn qa-btn-ambar" onclick="goProyectos(&quot;Con retraso&quot;,&quot;&quot;)">⚠️ Con retraso</button>
+      <button class="qa-btn qa-btn-azul" onclick="goProyectos(&quot;En revisión&quot;,&quot;&quot;)">🔍 En revisión</button>
+      <button class="qa-btn qa-btn-verde" onclick="goActas(&quot;Sesión Ordinaria&quot;)">📄 Sesiones ordinarias</button>
+      ${isAdmin()?'<button class="qa-btn qa-btn-guinda" onclick="goActividades(&quot;Hoy&quot;)">✅ Act. de hoy</button>':''}
     ` : '';
     qbDash.innerHTML = `
-      <button class="qa-btn qa-btn-guinda" onclick="goProyectos('Todos','')">🗂️ Todos los proyectos</button>
-      <button class="qa-btn qa-btn-verde" onclick="goProyectos('En tiempo','')">✅ En tiempo</button>
-      <button class="qa-btn qa-btn-mag" onclick="goProyectos('Completado','')">🏁 Completados</button>
+      <button class="qa-btn qa-btn-guinda" onclick="goProyectos(&quot;Todos&quot;,&quot;&quot;)">🗂️ Todos los proyectos</button>
+      <button class="qa-btn qa-btn-verde" onclick="goProyectos(&quot;En tiempo&quot;,&quot;&quot;)">✅ En tiempo</button>
+      <button class="qa-btn qa-btn-mag" onclick="goProyectos(&quot;Completado&quot;,&quot;&quot;)">🏁 Completados</button>
       ${adminDash}
     `;
   }
 
   // ── KPIs dashboard clickeables ──
   document.getElementById('dash-kpis').innerHTML=`
-    <div class="kpi kpi-link" style="--ac:#6B1A2A" onclick="goProyectos('Todos','')" title="Ver todos los proyectos">
+    <div class="kpi kpi-link" style="--ac:#6B1A2A" onclick="goProyectos(&quot;Todos&quot;,&quot;&quot;)" title="Ver todos los proyectos">
       <div class="kpi-lbl">Avance promedio</div><div class="kpi-val">${avg}%</div>
       <div class="kpi-sub">Sobre ${tot} proyectos</div>
       <span class="kpi-badge bq">Ver proyectos →</span>
     </div>
-    <div class="kpi ${isAdmin()?'kpi-link':''}" style="--ac:#1E6B3A" ${isAdmin()?'onclick="goActividades()"':''}>
-      <div class="kpi-lbl">Tasa actividades</div><div class="kpi-val">${Math.round(aOk/aTot*100)}%</div>
+    <div class="kpi" id="kpi-dash-act-box" style="--ac:#1E6B3A">
+      <div class="kpi-lbl">Tasa actividades</div>
+      <div class="kpi-val">${Math.round(aOk/aTot*100)}%</div>
       <div class="kpi-sub">${aOk} de ${aTot} completadas</div>
-      ${isAdmin()?'<span class="kpi-badge bg">Ver actividades →</span>':''}
     </div>
     <div class="kpi kpi-link" style="--ac:#C8960A" onclick="goActas()" title="Ver actas">
       <div class="kpi-lbl">Actas registradas</div><div class="kpi-val">${DB.actas.length}</div>
       <div class="kpi-sub">${DB.actas.filter(a=>a.estado==='Firmada').length} firmadas</div>
       <span class="kpi-badge bq">Ver actas →</span>
     </div>
-    <div class="kpi kpi-link" style="--ac:#B91C1C" onclick="goProyectos('Con retraso','')" title="Ver proyectos con retraso">
+    <div class="kpi kpi-link" style="--ac:#B91C1C" onclick="goProyectos(&quot;Con retraso&quot;,&quot;&quot;)" title="Ver proyectos con retraso">
       <div class="kpi-lbl">Con retraso</div><div class="kpi-val">${ret}</div>
       <div class="kpi-sub">Proyectos fuera de plan</div>
       <span class="kpi-badge ${ret>0?'br':'bg'}">${ret>0?'Atención → ':'Sin riesgos'}</span>
@@ -1235,7 +1244,7 @@ function renderDashboard(){
   document.getElementById('dash-avance').innerHTML=areasDash.map(a=>{
     const ps=proysFilt.filter(p=>p.area===a.key);
     const pct=ps.length?Math.round(ps.reduce((s,p)=>s+p.avance,0)/ps.length):0;
-    return `<div class="prog prog-link" onclick="goProyectos('Todos',this.dataset.area)" data-area="${a.key}" title="Ver proyectos de ${a.key}">
+    return `<div class="prog prog-link" onclick="goProyectos(&quot;Todos&quot;,this.dataset.area)" data-area="${a.key}" title="Ver proyectos de ${a.key}">
       <div class="prog-row">
         <span class="prog-name">${a.ico} ${a.key} <span style="font-size:.65rem;color:var(--txt3)">(${ps.length} proy.)</span></span>
         <span class="prog-pct">${pct}%</span>
@@ -1249,6 +1258,16 @@ function renderDashboard(){
     {l:'Con retraso', v:ret,  c:'#8B1A2A', fn:()=>goProyectos('Con retraso','')},
     {l:'Completado',  v:comp, c:'#1A4A7A', fn:()=>goProyectos('Completado','')}
   ]);
+  // Hacer kpi dash actividades clickeable si es admin
+  setTimeout(()=>{
+    const kpiDA = document.getElementById('kpi-dash-act-box');
+    if(kpiDA && isAdmin()){
+      kpiDA.classList.add('kpi-link');
+      kpiDA.onclick = goActividades;
+      kpiDA.title = 'Ver actividades';
+      kpiDA.querySelector('.kpi-sub').insertAdjacentHTML('afterend','<span class="kpi-badge bg" style="margin-top:.4rem;display:inline-flex">Ver actividades →</span>');
+    }
+  }, 50);
   document.getElementById('dash-act').innerHTML=['Hoy','Semana','Mes'].map((per,i)=>{
     const t=actsFilt.filter(a=>a.periodo===per).length||1,ok=actsFilt.filter(a=>a.periodo===per&&a.estado==='Completada').length;
     const pct=Math.round(ok/t*100),c=pct>=75?'#1E6B3A':pct>=40?'#C8960A':'#8B1A2A';
@@ -1269,7 +1288,7 @@ function proyHTML(p){
   const c=EC[p.estado]||'#6B1A2A',canEdit=currentUser&&(currentUser.isAdmin||currentUser.areaKey===p.area);
   return `<div class="proj" style="--ac:${c}">
     <div class="proj-top"><div class="proj-name">${p.nombre}</div><span class="proj-est kpi-badge ${EB[p.estado]}">${p.estado}</span></div>
-    <div class="proj-area" style="cursor:pointer;color:var(--magenta)" onclick="goProyectos('Todos',this.dataset.area)" data-area="${p.area}" title="Ver proyectos de ${p.area}">${p.area} → · ${p.dir||''}</div>
+    <div class="proj-area" style="cursor:pointer;color:var(--magenta)" onclick="goProyectos(&quot;Todos&quot;,this.dataset.area)" data-area="${p.area}" title="Ver proyectos de ${p.area}">${p.area} → · ${p.dir||''}</div>
     <div class="proj-desc">${p.desc}</div>
     <div class="proj-prow"><span style="font-size:.71rem;color:var(--txt2)">Avance</span><span style="font-weight:800;font-family:'JetBrains Mono',monospace;font-size:.75rem">${p.avance}%</span></div>
     <div class="proj-track"><div class="proj-fill" style="width:${p.avance}%;background:${c}"></div></div>
