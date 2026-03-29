@@ -1266,7 +1266,13 @@ function doLogin(){
   const err=document.getElementById('loginErr');
   if(!area){err.style.display='block';err.textContent='Selecciona tu área.';return}
   if(!USERS[area]||pass!==USERS[area].pass){err.style.display='block';err.textContent='Credenciales incorrectas.';return}
+  // Verificar que el usuario esté activo
+  if(USERS[area].activo===false){
+    err.style.display='block';err.textContent='Usuario inactivo. Contacta a la Secretaría Técnica.';return;
+  }
   currentUser={...USERS[area],key:area};
+  // Sincronizar isAdmin con nivelRol
+  currentUser.isAdmin = (currentUser.nivelRol==='admin');
   err.style.display='none';
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('app').style.display='block';
@@ -1332,11 +1338,18 @@ function addNotif(ico,msg,sub,color){
   updateNotifBadge();
 }
 function updateNotifBadge(){
-  const unread=NOTIFS.filter(n=>!n.read).length;
-  const badge=document.getElementById('notifCount');
-  const sbBadge=document.getElementById('sb-actas');
-  badge.style.display=unread>0?'block':'none';
-  badge.textContent=unread>9?'9+':unread;
+  let unread = NOTIFS.filter(n=>!n.read).length;
+  // Sumar mensajes no leídos del director
+  if(!isAdmin() && currentUser){
+    const area = myArea();
+    const msgsNuevos = DB.mensajes.filter(m=>(m.para===area||m.para==='TODAS')&&!m.leido).length;
+    unread += msgsNuevos;
+  }
+  const badge = document.getElementById('notifCount');
+  if(badge){
+    badge.style.display = unread>0 ? 'block' : 'none';
+    badge.textContent   = unread>9 ? '9+' : unread;
+  }
 }
 function toggleNotif(){
   const panel=document.getElementById('notifPanel');
@@ -1460,21 +1473,31 @@ function renderInicio(){
       </div>
     </div>`;
   }).join('');
-  // Mostrar strip de mensajes nuevos para directores
+  // Strip de mensajes para directores
   const stripEl = document.getElementById('ini-msg-strip');
   if(stripEl){
-    if(!isAdmin()){
-      const msgsNew = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()&&!m.leido) : [];
+    if(!isAdmin() && currentUser){
+      const area = myArea();
+      const msgsNew = DB.mensajes
+        ? DB.mensajes.filter(m=>(m.para===area||m.para==='TODAS')&&!m.leido)
+        : [];
       if(msgsNew.length > 0){
-        stripEl.innerHTML = msgsNew.map(m=>`
-          <div class="msg-notif-strip" onclick="openMensajes()">
-            <div class="msg-notif-strip-ico">${m.urgente?'⚠️':'📨'}</div>
-            <div class="msg-notif-strip-info">
-              <div class="msg-notif-strip-asunto">${m.urgente?'URGENTE: ':''}${m.asunto}</div>
-              <div class="msg-notif-strip-text">${m.texto.substring(0,120)}${m.texto.length>120?'...':''}</div>
-            </div>
-            <div style="flex-shrink:0;align-self:center;color:var(--magenta);font-size:.8rem;font-weight:700">Ver →</div>
-          </div>`).join('');
+        let stripHtml = '';
+        msgsNew.forEach(m=>{
+          const urgClass = m.urgente ? ' urgente' : '';
+          const ico      = m.urgente ? '⚠️' : '📨';
+          const titulo   = (m.urgente ? 'URGENTE: ' : '') + m.asunto;
+          const preview  = m.texto.length > 110 ? m.texto.substring(0,110)+'...' : m.texto;
+          stripHtml += '<div class="msg-notif-strip' + urgClass + '" onclick="openMensajes()">' +
+            '<div class="msg-notif-strip-ico">' + ico + '</div>' +
+            '<div class="msg-notif-strip-info">' +
+              '<div class="msg-notif-strip-asunto">' + titulo + '</div>' +
+              '<div class="msg-notif-strip-text">' + preview + '</div>' +
+            '</div>' +
+            '<div style="flex-shrink:0;align-self:center;color:var(--magenta);font-size:.8rem;font-weight:700;padding-left:.5rem">Ver →</div>' +
+          '</div>';
+        });
+        stripEl.innerHTML = stripHtml;
       } else {
         stripEl.innerHTML = '';
       }
@@ -2190,7 +2213,7 @@ function enviarMensaje(){
 }
 
 // Cerrar mensajes con overlay
-document.getElementById('msgOv').addEventListener('click',e=>{if(e.target.id==='msgOv')closeMensajes();});
+// overlay handled by DOMContentLoaded
 
 // Mostrar alerta de mensajes nuevos al directores al login
 function checkMensajesNuevos(){
