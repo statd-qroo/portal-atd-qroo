@@ -98,6 +98,52 @@ body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-
 .qa-btn-azul{border-color:#1A4A7A;color:#1A4A7A}
 .qa-btn-azul:hover{background:#1A4A7A;color:#fff}
 
+
+/* ══ MENSAJES DIRECTOS ══ */
+.msg-ov{position:fixed;inset:0;z-index:350;background:rgba(26,10,16,.6);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center}
+.msg-ov.open{display:flex}
+.msg-box{background:#fff;border-radius:18px;width:min(95vw,680px);max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(196,20,114,.25);animation:slideUp .25s ease}
+.msg-head{padding:1.1rem 1.4rem;background:linear-gradient(135deg,var(--guinda3),var(--guinda));display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.msg-head-left{display:flex;align-items:center;gap:.7rem}
+.msg-head-ico{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.msg-head-title{color:#fff;font-size:.92rem;font-weight:800}
+.msg-head-sub{color:rgba(255,255,255,.45);font-size:.68rem;margin-top:.1rem}
+.msg-close{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);font-size:1.2rem;padding:.2rem .4rem;border-radius:6px}
+.msg-close:hover{background:rgba(255,255,255,.12);color:#fff}
+.msg-tabs{display:flex;border-bottom:1px solid var(--beige2);flex-shrink:0;background:#fff}
+.msg-tab{flex:1;padding:.7rem;border:none;background:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:.8rem;font-weight:600;color:var(--txt2);border-bottom:2px solid transparent;transition:all .2s}
+.msg-tab.active{color:var(--magenta);border-bottom-color:var(--magenta)}
+.msg-body{flex:1;overflow-y:auto;padding:1.1rem 1.3rem}
+.msg-empty{text-align:center;padding:2rem;color:var(--txt3);font-size:.85rem}
+.msg-item{padding:.85rem 1rem;border-radius:10px;border:1px solid var(--beige2);margin-bottom:.65rem;cursor:pointer;transition:all .18s;position:relative}
+.msg-item:hover{border-color:var(--magenta);box-shadow:0 2px 10px rgba(196,20,114,.1)}
+.msg-item.unread{background:#FFF0F7;border-color:rgba(196,20,114,.25)}
+.msg-item.urgente{border-left:4px solid #B91C1C}
+.msg-item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.3rem;gap:.5rem}
+.msg-item-asunto{font-weight:700;font-size:.85rem;color:var(--guinda);flex:1}
+.msg-item-fecha{font-size:.68rem;color:var(--txt3);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.msg-item-meta{font-size:.72rem;color:var(--txt2);margin-bottom:.35rem}
+.msg-item-preview{font-size:.8rem;color:var(--txt2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.msg-badges{display:flex;gap:.4rem;margin-top:.45rem;flex-wrap:wrap}
+.msg-badge-nuevo{padding:.12rem .5rem;border-radius:99px;font-size:.65rem;font-weight:700;background:#FCE7F3;color:#C41472}
+.msg-badge-urgente{padding:.12rem .5rem;border-radius:99px;font-size:.65rem;font-weight:700;background:#FEE2E2;color:#B91C1C}
+.msg-badge-leido{padding:.12rem .5rem;border-radius:99px;font-size:.65rem;font-weight:700;background:var(--gris2);color:var(--txt3)}
+.msg-detail{display:none;padding:1.1rem 1.3rem}
+.msg-detail.open{display:block}
+.msg-detail-header{margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid var(--beige2)}
+.msg-detail-asunto{font-size:1rem;font-weight:800;color:var(--guinda);margin-bottom:.4rem}
+.msg-detail-meta{font-size:.75rem;color:var(--txt2);display:flex;gap:1rem;flex-wrap:wrap}
+.msg-detail-body{font-size:.88rem;color:var(--txt);line-height:1.75;white-space:pre-wrap}
+.msg-compose{padding:1.1rem 1.3rem;border-top:1px solid var(--beige2);flex-shrink:0;background:#fff}
+.msg-compose-title{font-size:.78rem;font-weight:700;color:var(--guinda);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem}
+.msg-compose-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem}
+.msg-notif-strip{background:linear-gradient(135deg,#FFF0F7,#FCE7F3);border:1.5px solid rgba(196,20,114,.2);border-radius:10px;padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.7rem;cursor:pointer;transition:all .18s}
+.msg-notif-strip:hover{border-color:var(--magenta);box-shadow:0 2px 10px rgba(196,20,114,.12)}
+.msg-notif-strip-ico{font-size:1.3rem;flex-shrink:0}
+.msg-notif-strip-info{flex:1}
+.msg-notif-strip-asunto{font-weight:700;font-size:.84rem;color:var(--guinda);margin-bottom:.15rem}
+.msg-notif-strip-text{font-size:.78rem;color:var(--txt2);line-height:1.45}
+
 /* ══ TUTORIAL ══ */
 .tut-ov{position:fixed;inset:0;z-index:400;background:rgba(26,10,16,.65);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center}
 .tut-ov.open{display:flex}
@@ -551,6 +597,7 @@ body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-
     <!-- ────── INICIO ────── -->
     <div class="page active" id="page-inicio">
       <div id="heroWrap"></div>
+      <div id="ini-msg-strip"></div>
       <div class="quick-access-bar" id="ini-quick-bar"></div>
       <div class="kpi-grid" id="ini-kpis"></div>
       <div class="sdiv" id="sdiv-areas"><div class="sdiv-ico" style="background:#F5EFE6">🏢</div><span class="sdiv-t" id="sdiv-areas-label">Estado de las Direcciones</span><div class="sdiv-line"></div></div>
@@ -757,6 +804,90 @@ body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-
 
 
 <!-- ══ TUTORIAL ══ -->
+
+<!-- ══ PANEL DE MENSAJES DIRECTOS ══ -->
+<div class="msg-ov" id="msgOv">
+  <div class="msg-box">
+    <div class="msg-head">
+      <div class="msg-head-left">
+        <div class="msg-head-ico">📨</div>
+        <div>
+          <div class="msg-head-title" id="msgHeadTitle">Mensajes Directos</div>
+          <div class="msg-head-sub" id="msgHeadSub">Secretaría Técnica · ATD Quintana Roo</div>
+        </div>
+      </div>
+      <button class="msg-close" onclick="closeMensajes()">✕</button>
+    </div>
+
+    <!-- Tabs: admin ve Bandeja + Redactar, director solo Bandeja -->
+    <div class="msg-tabs" id="msgTabs">
+      <button class="msg-tab active" id="msgTabBandeja" onclick="switchMsgTab('bandeja')">📥 Bandeja</button>
+      <button class="msg-tab" id="msgTabRedactar" onclick="switchMsgTab('redactar')" style="display:none">✏️ Nuevo mensaje</button>
+    </div>
+
+    <!-- BANDEJA -->
+    <div class="msg-body" id="msgBandeja">
+      <div id="msgListWrap"></div>
+    </div>
+
+    <!-- DETALLE DE MENSAJE -->
+    <div class="msg-detail" id="msgDetalle">
+      <button class="btn btn-secondary btn-sm" onclick="backToList()" style="margin-bottom:.8rem">← Volver</button>
+      <div class="msg-detail-header">
+        <div class="msg-detail-asunto" id="detAsunto"></div>
+        <div class="msg-detail-meta">
+          <span id="detDe"></span>
+          <span id="detPara"></span>
+          <span id="detFecha"></span>
+        </div>
+      </div>
+      <div class="msg-detail-body" id="detBody"></div>
+    </div>
+
+    <!-- REDACTAR (solo admin) -->
+    <div class="msg-compose" id="msgCompose" style="display:none">
+      <div class="msg-compose-title">📝 Nuevo mensaje para un director</div>
+      <div class="msg-compose-row">
+        <div class="field" style="margin-bottom:0">
+          <label>Para (dirección)</label>
+          <select id="msgPara">
+            <option value="">— Selecciona el área —</option>
+            <option value="Gobierno Digital">Dir. Gobierno Digital — Mtro. Basto Cabrera</option>
+            <option value="Transformación Digital">Dir. Transformación Digital — Ing. Hernández Esquivel</option>
+            <option value="Simplificación Administrativa">Dir. Simplificación Administrativa — Lic. Cornelio Ramos</option>
+            <option value="Buenas Prácticas">Dir. Buenas Prácticas — Lic. Buenfil Pech</option>
+            <option value="Planeación">Dir. Planeación — Lic. Hernández Contreras</option>
+            <option value="Vinculación">Dir. Vinculación — Mtra. Suárez Osorio</option>
+            <option value="Jurídica">Dir. Jurídica — Lic. Alcocer Basto</option>
+            <option value="Administrativa">Dir. Administrativa — Lic. Uc Ángulo</option>
+            <option value="TODAS">📢 Todas las direcciones</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Urgente</label>
+          <select id="msgUrgente">
+            <option value="false">No</option>
+            <option value="true">Sí — marcar como urgente</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:.6rem;margin-bottom:.6rem">
+        <label>Asunto</label>
+        <input id="msgAsunto" placeholder="Asunto del mensaje">
+      </div>
+      <div class="field" style="margin-bottom:.7rem">
+        <label>Mensaje</label>
+        <textarea id="msgTexto" style="height:100px" placeholder="Escribe el mensaje para el director/a..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:.6rem">
+        <button class="btn btn-secondary btn-sm" onclick="switchMsgTab('bandeja')">Cancelar</button>
+        <button class="btn btn-primary" onclick="enviarMensaje()">📨 Enviar mensaje</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="tut-ov" id="tutOv">
   <div class="tut-box">
     <div class="tut-head">
@@ -946,6 +1077,12 @@ let DB = {
     {id:2,titulo:'Reunión de Trabajo — Agenda Digital QR',tipo:'Reunión de Trabajo',fecha:'2026-02-10',area:'Transformación Digital',estado:'En seguimiento',asistentes:'Ing. Dulce Hernández Esquivel, Lic. Manuel Hernández Contreras, Lic. Edgar Rivera Galera',desc:'Reunión para revisar el avance del proyecto de Agenda Digital y definir los lineamientos técnicos para el periodo 2026-2030.',acuerdos:['Integrar diagnóstico de infraestructura digital estatal','Consultar con municipios los requerimientos de conectividad','Presentar borrador de Agenda Digital en sesión de marzo']},
     {id:3,titulo:'Sesión Ordinaria No. 2 — ATD Quintana Roo',tipo:'Sesión Ordinaria',fecha:'2026-02-14',area:'Secretaría Técnica',estado:'Firmada',asistentes:'Pleno de directores ATD',desc:'Segunda sesión ordinaria. Se revisaron avances del primer mes de operación y se aprobaron ajustes al plan de trabajo institucional.',acuerdos:['Avalar informe de actividades enero 2026','Aprobar calendario de capacitación interna','Definir indicadores de desempeño por dirección']},
   ],
+  mensajes:[
+    // Ejemplos de mensajes de la Secretaría Técnica a directores
+    {id:1, de:'Secretaría Técnica', para:'Gobierno Digital',    asunto:'Reunión de seguimiento', texto:'Estimado Mtro. Basto Cabrera, se le convoca a reunión de seguimiento el próximo lunes 31 de marzo a las 10:00 h en las instalaciones de la ATD.', fecha:'2026-03-28', leido:false, urgente:false},
+    {id:2, de:'Secretaría Técnica', para:'Transformación Digital', asunto:'Entrega de informe', texto:'Ing. Hernández Esquivel, favor de hacer entrega del informe de avance del proyecto Agenda Digital QR antes del viernes 4 de abril.', fecha:'2026-03-27', leido:false, urgente:true},
+    {id:3, de:'Secretaría Técnica', para:'Planeación',           asunto:'Actualización de indicadores', texto:'Lic. Hernández Contreras, se solicita actualizar los indicadores de desempeño del área en el portal institucional a más tardar el jueves 3 de abril.', fecha:'2026-03-26', leido:true, urgente:false},
+  ],
   personal:[
     {nombre:'Colaborador/a 1',reacciones:0,comentarios:0,compartidos:0},
     {nombre:'Colaborador/a 2',reacciones:0,comentarios:0,compartidos:0},
@@ -1048,7 +1185,7 @@ function doLogin(){
     const sbAct=document.getElementById('sb-actividades');
     if(sbAct) sbAct.style.display='none';
   }
-  updateDate(); updateNotifBadge(); renderAll();
+  updateDate(); updateNotifBadge(); renderAll(); checkMensajesNuevos();
   addNotif('🏛️','Bienvenido/a, '+currentUser.dir.split(' ').slice(-2).join(' '),'Acceso exitoso al portal','#C41472');
 }
 function doLogout(){
@@ -1151,11 +1288,60 @@ function renderInicio(){
         <div class="dh-stat"><div class="dh-stat-v">${aOk}</div><div class="dh-stat-l">Act. OK</div></div>
       </div>
     </div>`;
-  document.getElementById('ini-kpis').innerHTML=`
-    <div class="kpi" style="--ac:#6B1A2A"><div class="kpi-lbl">Proyectos registrados</div><div class="kpi-val">${tot}</div><div class="kpi-sub">${comp} completados · ${ret} con retraso</div><span class="kpi-badge ${ret>0?'ba':'bg'}">${ret>0?ret+' en riesgo':'Sin retrasos'}</span></div>
-    <div class="kpi" style="--ac:#1E6B3A"><div class="kpi-lbl">Actividades completadas</div><div class="kpi-val">${aOk}</div><div class="kpi-sub">de ${aTot} programadas</div><span class="kpi-badge bb">${Math.round(aOk/aTot*100)}% completado</span></div>
-    <div class="kpi" style="--ac:#C8960A"><div class="kpi-lbl">Actas registradas</div><div class="kpi-val">${DB.actas.length}</div><div class="kpi-sub">${DB.actas.filter(a=>a.estado==='Firmada').length} firmadas · ${DB.actas.filter(a=>a.estado==='En seguimiento').length} en seguimiento</div><span class="kpi-badge bq">Ver actas</span></div>
-    <div class="kpi-sub">Total semana · 4 redes</div><span class="kpi-badge bg">↑ Activo</span></div>`;
+  // KPIs diferenciados por rol
+  const misMsg = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()&&!m.leido).length : 0;
+  if(isAdmin()){
+    document.getElementById('ini-kpis').innerHTML=`
+      <div class="kpi kpi-link" style="--ac:#6B1A2A" onclick="goProyectos(&quot;Todos&quot;,&quot;&quot;)">
+        <div class="kpi-lbl">Proyectos registrados</div><div class="kpi-val">${tot}</div>
+        <div class="kpi-sub">${comp} completados · ${ret} con retraso</div>
+        <span class="kpi-badge ${ret>0?'ba':'bg'}">${ret>0?ret+' en riesgo':'Sin retrasos'} →</span>
+      </div>
+      <div class="kpi" id="kpi-act-box" style="--ac:#1E6B3A">
+        <div class="kpi-lbl">Actividades completadas</div><div class="kpi-val">${aOk}</div>
+        <div class="kpi-sub">de ${aTot} programadas</div>
+        <span class="kpi-badge bb">${Math.round(aOk/aTot*100)}%</span>
+      </div>
+      <div class="kpi kpi-link" style="--ac:#C8960A" onclick="goActas()">
+        <div class="kpi-lbl">Actas registradas</div><div class="kpi-val">${DB.actas.length}</div>
+        <div class="kpi-sub">${DB.actas.filter(a=>a.estado==='Firmada').length} firmadas · ${DB.actas.filter(a=>a.estado==='En seguimiento').length} en seguimiento</div>
+        <span class="kpi-badge bq">Ver actas →</span>
+      </div>
+      <div class="kpi kpi-link" style="--ac:#C41472" onclick="openMensajes()">
+        <div class="kpi-lbl">Mensajes enviados</div>
+        <div class="kpi-val">${DB.mensajes?DB.mensajes.length:0}</div>
+        <div class="kpi-sub">${DB.mensajes?DB.mensajes.filter(m=>!m.leido).length:0} sin leer por directores</div>
+        <span class="kpi-badge" style="background:#FCE7F3;color:#C41472">Gestionar →</span>
+      </div>`;
+  } else {
+    // Vista de director: sin Actividades ni Redes
+    const msgsDir = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()).length : 0;
+    const msgsNuevos = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()&&!m.leido).length : 0;
+    document.getElementById('ini-kpis').innerHTML=`
+      <div class="kpi kpi-link" style="--ac:#6B1A2A" onclick="goProyectos(&quot;Todos&quot;,&quot;&quot;)">
+        <div class="kpi-lbl">Mis proyectos</div><div class="kpi-val">${tot}</div>
+        <div class="kpi-sub">${comp} completados · ${ret} con retraso</div>
+        <span class="kpi-badge ${ret>0?'ba':'bg'}">${ret>0?ret+' en riesgo':'Ver proyectos →'}</span>
+      </div>
+      <div class="kpi kpi-link" style="--ac:#1E6B3A" onclick="goProyectos(&quot;En tiempo&quot;,&quot;&quot;)">
+        <div class="kpi-lbl">En tiempo</div><div class="kpi-val">${proysFiltrados.filter(p=>p.estado==='En tiempo').length}</div>
+        <div class="kpi-sub">Proyectos dentro del plan</div>
+        <span class="kpi-badge bg">Ver →</span>
+      </div>
+      <div class="kpi kpi-link" style="--ac:#C8960A" onclick="goActas()">
+        <div class="kpi-lbl">Actas de mi área</div>
+        <div class="kpi-val">${DB.actas?DB.actas.filter(a=>a.area===myArea()||a.area==='Secretaría Técnica').length:0}</div>
+        <div class="kpi-sub">Sesiones y minutas</div>
+        <span class="kpi-badge bq">Ver actas →</span>
+      </div>
+      <div class="kpi kpi-link" style="--ac:#C41472;position:relative" onclick="openMensajes()">
+        <div class="kpi-lbl">Mensajes</div>
+        <div class="kpi-val">${msgsDir}</div>
+        <div class="kpi-sub">${msgsNuevos>0?msgsNuevos+' mensaje(s) nuevo(s)':'Sin mensajes nuevos'}</div>
+        <span class="kpi-badge" style="background:${msgsNuevos>0?'#FCE7F3':'#F5EFE6'};color:${msgsNuevos>0?'#C41472':'#8B3A5A'}">${msgsNuevos>0?'📬 '+msgsNuevos+' nuevo(s)':'Sin mensajes'}</span>
+        ${msgsNuevos>0?'<div style="position:absolute;top:.7rem;right:.7rem;width:10px;height:10px;border-radius:50%;background:#C41472;animation:blink 1.5s infinite"></div>':''}
+      </div>`;
+  }
   const areasMostrar = isAdmin() ? AREAS : AREAS.filter(a=>a.key===myArea());
   const sdivLbl=document.getElementById('sdiv-areas-label');
   if(sdivLbl) sdivLbl.textContent = isAdmin()?'Estado de las Direcciones':'Mi Dirección';
@@ -1174,6 +1360,28 @@ function renderInicio(){
       </div>
     </div>`;
   }).join('');
+  // Mostrar strip de mensajes nuevos para directores
+  const stripEl = document.getElementById('ini-msg-strip');
+  if(stripEl){
+    if(!isAdmin()){
+      const msgsNew = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()&&!m.leido) : [];
+      if(msgsNew.length > 0){
+        stripEl.innerHTML = msgsNew.map(m=>`
+          <div class="msg-notif-strip" onclick="openMensajes()">
+            <div class="msg-notif-strip-ico">${m.urgente?'⚠️':'📨'}</div>
+            <div class="msg-notif-strip-info">
+              <div class="msg-notif-strip-asunto">${m.urgente?'URGENTE: ':''}${m.asunto}</div>
+              <div class="msg-notif-strip-text">${m.texto.substring(0,120)}${m.texto.length>120?'...':''}</div>
+            </div>
+            <div style="flex-shrink:0;align-self:center;color:var(--magenta);font-size:.8rem;font-weight:700">Ver →</div>
+          </div>`).join('');
+      } else {
+        stripEl.innerHTML = '';
+      }
+    } else {
+      stripEl.innerHTML = '';
+    }
+  }
   const recLbl=document.getElementById('sdiv-recientes-lbl');
   if(recLbl) recLbl.textContent=isAdmin()?'Proyectos Recientes':'Mis Proyectos Recientes';
   // Hacer kpi actividades clickeable si es admin
@@ -1585,6 +1793,148 @@ document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.
 /* ── TOAST ── */
 function showToast(msg,bg){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg||'var(--magenta)';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
+
+
+/* ── MENSAJES DIRECTOS ── */
+let msgTabActual = 'bandeja';
+
+function openMensajes(){
+  const isAdm = isAdmin();
+  document.getElementById('msgHeadTitle').textContent = isAdm ? 'Mensajes enviados' : 'Mis mensajes';
+  document.getElementById('msgHeadSub').textContent   = isAdm ? 'Secretaría Técnica · Gestión de mensajes' : 'Mensajes de la Secretaría Técnica';
+  // Mostrar tab redactar solo para admin
+  document.getElementById('msgTabRedactar').style.display = isAdm ? '' : 'none';
+  // Mostrar compose solo para admin
+  document.getElementById('msgCompose').style.display = (isAdm && msgTabActual==='redactar') ? '' : 'none';
+  switchMsgTab('bandeja');
+  document.getElementById('msgOv').classList.add('open');
+}
+
+function closeMensajes(){
+  document.getElementById('msgOv').classList.remove('open');
+}
+
+function switchMsgTab(tab){
+  msgTabActual = tab;
+  document.querySelectorAll('.msg-tab').forEach(t=>t.classList.remove('active'));
+  if(tab==='bandeja'){
+    document.getElementById('msgTabBandeja').classList.add('active');
+    document.getElementById('msgBandeja').style.display='';
+    document.getElementById('msgDetalle').classList.remove('open');
+    document.getElementById('msgCompose').style.display='none';
+    renderMsgList();
+  } else {
+    document.getElementById('msgTabRedactar').classList.add('active');
+    document.getElementById('msgBandeja').style.display='none';
+    document.getElementById('msgDetalle').classList.remove('open');
+    document.getElementById('msgCompose').style.display='';
+  }
+}
+
+function renderMsgList(){
+  const isAdm = isAdmin();
+  // Admin ve todos los mensajes que ha enviado; director ve solo los suyos
+  const lista = isAdm
+    ? [...DB.mensajes].reverse()
+    : [...DB.mensajes].filter(m=>m.para===myArea()).reverse();
+
+  const wrap = document.getElementById('msgListWrap');
+  if(!lista.length){
+    wrap.innerHTML = '<div class="msg-empty">📭 No hay mensajes' + (isAdm?' enviados':' para tu área') + '</div>';
+    return;
+  }
+  wrap.innerHTML = lista.map(m=>`
+    <div class="msg-item ${m.leido?'':'unread'} ${m.urgente?'urgente':''}" onclick="verMensaje(${m.id})">
+      <div class="msg-item-top">
+        <div class="msg-item-asunto">${m.asunto}</div>
+        <div class="msg-item-fecha">${m.fecha}</div>
+      </div>
+      <div class="msg-item-meta">${isAdm?'Para: <strong>'+m.para+'</strong>':'De: <strong>'+m.de+'</strong>'}</div>
+      <div class="msg-item-preview">${m.texto}</div>
+      <div class="msg-badges">
+        ${!m.leido ? '<span class="msg-badge-nuevo">● Nuevo</span>' : '<span class="msg-badge-leido">Leído</span>'}
+        ${m.urgente ? '<span class="msg-badge-urgente">⚠️ Urgente</span>' : ''}
+      </div>
+    </div>`).join('');
+}
+
+function verMensaje(id){
+  const m = DB.mensajes.find(x=>x.id===id);
+  if(!m) return;
+  // Marcar como leído
+  m.leido = true;
+  document.getElementById('detAsunto').textContent = m.asunto;
+  document.getElementById('detDe').textContent = 'De: ' + m.de;
+  document.getElementById('detPara').textContent = '· Para: ' + m.para;
+  document.getElementById('detFecha').textContent = '· ' + m.fecha;
+  document.getElementById('detBody').textContent = m.texto;
+  document.getElementById('msgBandeja').style.display='none';
+  document.getElementById('msgDetalle').classList.add('open');
+  // Actualizar KPI de mensajes no leídos
+  renderInicio();
+  updateNotifBadge();
+}
+
+function backToList(){
+  document.getElementById('msgDetalle').classList.remove('open');
+  document.getElementById('msgBandeja').style.display='';
+  renderMsgList();
+}
+
+function enviarMensaje(){
+  const para    = document.getElementById('msgPara').value;
+  const asunto  = document.getElementById('msgAsunto').value.trim();
+  const texto   = document.getElementById('msgTexto').value.trim();
+  const urgente = document.getElementById('msgUrgente').value === 'true';
+
+  if(!para){showToast('⚠️ Selecciona el área destinataria','#C8960A');return}
+  if(!asunto){showToast('⚠️ Escribe el asunto','#C8960A');return}
+  if(!texto){showToast('⚠️ Escribe el mensaje','#C8960A');return}
+
+  const hoy = new Date().toLocaleDateString('es-MX',{year:'numeric',month:'2-digit',day:'2-digit'});
+
+  if(para === 'TODAS'){
+    // Enviar a todas las áreas
+    AREAS.filter(a=>a.key!=='Secretaría Técnica').forEach(a=>{
+      DB.mensajes.push({
+        id: nextId++, de:'Secretaría Técnica', para:a.key,
+        asunto, texto, fecha:hoy, leido:false, urgente
+      });
+    });
+    showToast('📨 Mensaje enviado a todas las direcciones');
+  } else {
+    DB.mensajes.push({
+      id: nextId++, de:'Secretaría Técnica', para,
+      asunto, texto, fecha:hoy, leido:false, urgente
+    });
+    showToast('📨 Mensaje enviado a ' + para);
+  }
+
+  // Agregar notificación
+  addNotif('📨','Mensaje enviado: '+asunto, para, '#C41472');
+
+  // Limpiar form y volver a bandeja
+  document.getElementById('msgPara').value='';
+  document.getElementById('msgAsunto').value='';
+  document.getElementById('msgTexto').value='';
+  document.getElementById('msgUrgente').value='false';
+  switchMsgTab('bandeja');
+  renderInicio();
+}
+
+// Cerrar mensajes con overlay
+document.getElementById('msgOv').addEventListener('click',e=>{if(e.target.id==='msgOv')closeMensajes();});
+
+// Mostrar alerta de mensajes nuevos al directores al login
+function checkMensajesNuevos(){
+  if(!currentUser || isAdmin()) return;
+  const nuevos = DB.mensajes.filter(m=>m.para===myArea()&&!m.leido);
+  if(nuevos.length > 0){
+    nuevos.forEach(m=>{
+      addNotif(m.urgente?'⚠️':'📨', m.asunto, 'Mensaje de la Secretaría Técnica', m.urgente?'#B91C1C':'#C41472');
+    });
+  }
+}
 
 /* ── TUTORIAL ── */
 let tutStep = 1;
