@@ -553,6 +553,7 @@ body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-
       <label class="login-lbl">Dirección / Área</label>
       <select class="login-sel" id="loginArea">
         <option value="">— Selecciona tu área —</option>
+        <option value="dirGen">Dirección General</option>
         <option value="secTec">Secretaría Técnica</option>
         <option value="gobDig">Dir. Gobierno Digital</option>
         <option value="transAg">Dir. Transformación y Agenda Digital</option>
@@ -1123,25 +1124,21 @@ body{font-family:'Sora',sans-serif;background:var(--beige);color:var(--txt);min-
         <button class="btn btn-primary btn-sm" id="tutNext" onclick="tutNav(1)">Siguiente →</button>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
+  </d
 /* ════════════════════════════════════════════════════
    DATOS INSTITUCIONALES REALES — ATD QUINTANA ROO
 ════════════════════════════════════════════════════ */
 const USERS = {
-  secTec:  { name:'Secretaría Técnica', dir:'Lic. Edgar José Rivera Galera',               role:'Secretario Técnico',                                             pass:'atd2026', isAdmin:true,  areaKey:'Secretaría Técnica' },
-  gobDig:  { name:'Dir. Gobierno Digital', dir:'Mtro. Geovanny Alejandro Basto Cabrera', role:'Director de Gobierno Digital',                                   pass:'atd2026', isAdmin:false, areaKey:'Gobierno Digital' },
-  transAg: { name:'Dir. Transformación Digital', dir:'Ing. Dulce Gabriela Hernández Esquivel', role:'Directora de Transformación Digital y Agenda Digital',     pass:'atd2026', isAdmin:false, areaKey:'Transformación Digital' },
-  simpAdm: { name:'Dir. Simplificación Administrativa', dir:'Lic. Judith Areli Cornelio Ramos', role:'Directora de Simplificación Administrativa',              pass:'atd2026', isAdmin:false, areaKey:'Simplificación Administrativa' },
-  bueReg:  { name:'Dir. Buenas Prácticas', dir:'Lic. Alejandra del Carmen Buenfil Pech', role:'Directora de Análisis y Buenas Prácticas Regulatorias',          pass:'atd2026', isAdmin:false, areaKey:'Buenas Prácticas' },
-  plan:    { name:'Dir. Planeación', dir:'Lic. Manuel Andrés Hernández Contreras',        role:'Director de Planeación',                                         pass:'atd2026', isAdmin:false, areaKey:'Planeación' },
-  vinc:    { name:'Dir. Vinculación', dir:'Mtra. Karla Elizabeth Suárez Osorio',          role:'Directora de Vinculación y Atención Ciudadana',                  pass:'atd2026', isAdmin:false, areaKey:'Vinculación' },
-  jur:     { name:'Dir. Jurídica', dir:'Lic. Juan Antonio Alcocer Basto',                 role:'Director Jurídico y Unidad de Transparencia',                    pass:'atd2026', isAdmin:false, areaKey:'Jurídica' },
-  adm:     { name:'Dir. Administrativa', dir:'Lic. Jorge Alberto Uc Ángulo',              role:'Director Administrativo y de Archivo',                           pass:'atd2026', isAdmin:false, areaKey:'Administrativa' },
+  dirGen:  { name:'Dirección General', dir:'M.E. Javier Abraham Ayuso Sánchez',          role:'Director General',           pass:'DG_ATD2026', isAdmin:false, areaKey:'DIRECTOR_GENERAL',  nivelRol:'visor',  activo:true },
+  secTec:  { name:'Secretaría Técnica', dir:'Lic. Edgar José Rivera Galera',               role:'Secretario Técnico',         pass:'atd2026',    isAdmin:true,  areaKey:'Secretaría Técnica', nivelRol:'admin',  activo:true },
+  gobDig:  { name:'Dir. Gobierno Digital', dir:'Mtro. Geovanny Alejandro Basto Cabrera', role:'Director de Gobierno Digital', pass:'atd2026',   isAdmin:false, areaKey:'Gobierno Digital',   nivelRol:'editor', activo:true },
+  transAg: { name:'Dir. Transformación Digital', dir:'Ing. Dulce Gabriela Hernández Esquivel', role:'Directora de Transformación Digital y Agenda Digital',     pass:'atd2026', isAdmin:false, areaKey:'Transformación Digital', nivelRol:'editor', activo:true },
+  simpAdm: { name:'Dir. Simplificación Administrativa', dir:'Lic. Judith Areli Cornelio Ramos', role:'Directora de Simplificación Administrativa',              pass:'atd2026', isAdmin:false, areaKey:'Simplificación Administrativa', nivelRol:'editor', activo:true },
+  bueReg:  { name:'Dir. Buenas Prácticas', dir:'Lic. Alejandra del Carmen Buenfil Pech', role:'Directora de Análisis y Buenas Prácticas Regulatorias',          pass:'atd2026', isAdmin:false, areaKey:'Buenas Prácticas', nivelRol:'editor', activo:true },
+  plan:    { name:'Dir. Planeación', dir:'Lic. Manuel Andrés Hernández Contreras',        role:'Director de Planeación',                                         pass:'atd2026', isAdmin:false, areaKey:'Planeación', nivelRol:'editor', activo:true },
+  vinc:    { name:'Dir. Vinculación', dir:'Mtra. Karla Elizabeth Suárez Osorio',          role:'Directora de Vinculación y Atención Ciudadana',                  pass:'atd2026', isAdmin:false, areaKey:'Vinculación', nivelRol:'editor', activo:true },
+  jur:     { name:'Dir. Jurídica', dir:'Lic. Juan Antonio Alcocer Basto',                 role:'Director Jurídico y Unidad de Transparencia',                    pass:'atd2026', isAdmin:false, areaKey:'Jurídica', nivelRol:'editor', activo:true },
+  adm:     { name:'Dir. Administrativa', dir:'Lic. Jorge Alberto Uc Ángulo',              role:'Director Administrativo y de Archivo',                           pass:'atd2026', isAdmin:false, areaKey:'Administrativa', nivelRol:'editor', activo:true },
 };
 
 let AREAS = [
@@ -1252,10 +1249,12 @@ function goActas(tipo){
 
 /* ── HELPERS DE ROL ── */
 function isAdmin(){ return currentUser && currentUser.isAdmin; }
+function isVisor(){ return currentUser && currentUser.nivelRol === 'visor'; }
+function isAdminOrVisor(){ return isAdmin() || isVisor(); }
 function myArea(){ return currentUser ? currentUser.areaKey : null; }
-function canEdit(areaKey){ return isAdmin() || myArea() === areaKey; }
+function canEdit(areaKey){ return isAdmin(); } // Solo admin edita
 function filterByRole(list, areaField){
-  if(isAdmin()) return list;
+  if(isAdminOrVisor()) return list; // Admin y Visor ven todo
   return list.filter(item => item[areaField] === myArea());
 }
 
@@ -1271,25 +1270,33 @@ function doLogin(){
     err.style.display='block';err.textContent='Usuario inactivo. Contacta a la Secretaría Técnica.';return;
   }
   currentUser={...USERS[area],key:area};
-  // Sincronizar isAdmin con nivelRol
-  currentUser.isAdmin = (currentUser.nivelRol==='admin');
+  // Sincronizar isAdmin y nivelRol
+  currentUser.isAdmin = (currentUser.nivelRol === 'admin');
   err.style.display='none';
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('sbName').textContent=currentUser.dir;
   document.getElementById('sbTag').textContent=currentUser.role;
-  document.getElementById('tbArea').textContent=currentUser.name;
-  // Mostrar badge de área si no es admin
-  if(!currentUser.isAdmin){
-    document.getElementById('tbArea').textContent=currentUser.areaKey;
+  // Topbar: nombre de área o rol según tipo de usuario
+  if(currentUser.nivelRol === 'admin'){
+    document.getElementById('tbArea').textContent = '· Secretaría Técnica — Acceso total';
+  } else if(currentUser.nivelRol === 'visor'){
+    document.getElementById('tbArea').textContent = '· Dirección General — Modo consulta';
+  } else {
+    document.getElementById('tbArea').textContent = '· ' + currentUser.areaKey;
   }
   if(currentUser.isAdmin){
-    document.getElementById('sb-adm-grp').style.display='block';
-    document.getElementById('sb-adm-btn').style.display='block';
+    // Secretaría Técnica: acceso total
+    document.getElementById('sb-adm-grp').style.display = 'block';
+    document.getElementById('sb-adm-btn').style.display = 'block';
+  } else if(isVisor()){
+    // Director General: ve todo, sin panel admin ni actividades
+    const sbAct = document.getElementById('sb-actividades');
+    if(sbAct) sbAct.style.display = 'none';
   } else {
-    // Ocultar Actividades para directores
-    const sbAct=document.getElementById('sb-actividades');
-    if(sbAct) sbAct.style.display='none';
+    // Directores de área: vista restringida
+    const sbAct = document.getElementById('sb-actividades');
+    if(sbAct) sbAct.style.display = 'none';
   }
   updateDate(); updateNotifBadge(); renderAll(); checkMensajesNuevos();
   addNotif('🏛️','Bienvenido/a, '+currentUser.dir.split(' ').slice(-2).join(' '),'Acceso exitoso al portal','#C41472');
@@ -1302,7 +1309,6 @@ function doLogout(){
   document.getElementById('loginArea').value='';
   document.getElementById('sb-adm-grp').style.display='none';
   document.getElementById('sb-adm-btn').style.display='none';
-  // Restaurar visibilidad de actividades para el próximo login
   const sbAct=document.getElementById('sb-actividades');
   if(sbAct) sbAct.style.display='';
   document.getElementById('notifPanel').classList.remove('open');
@@ -1340,7 +1346,7 @@ function addNotif(ico,msg,sub,color){
 function updateNotifBadge(){
   let unread = NOTIFS.filter(n=>!n.read).length;
   // Sumar mensajes no leídos del director
-  if(!isAdmin() && currentUser){
+  if(!isAdmin() && !isVisor() && currentUser){
     const area = myArea();
     const msgsNuevos = DB.mensajes.filter(m=>(m.para===area||m.para==='TODAS')&&!m.leido).length;
     unread += msgsNuevos;
@@ -1403,7 +1409,7 @@ function renderInicio(){
     </div>`;
   // KPIs diferenciados por rol
   const misMsg = DB.mensajes ? DB.mensajes.filter(m=>m.para===myArea()&&!m.leido).length : 0;
-  if(isAdmin()){
+  if(isAdminOrVisor()){
     document.getElementById('ini-kpis').innerHTML=`
       <div class="kpi kpi-link" style="--ac:#6B1A2A" onclick="goProyectos(&quot;Todos&quot;,&quot;&quot;)">
         <div class="kpi-lbl">Proyectos registrados</div><div class="kpi-val">${tot}</div>
@@ -1455,7 +1461,7 @@ function renderInicio(){
         ${msgsNuevos>0?'<div style="position:absolute;top:.7rem;right:.7rem;width:10px;height:10px;border-radius:50%;background:#C41472;animation:blink 1.5s infinite"></div>':''}
       </div>`;
   }
-  const areasMostrar = isAdmin() ? AREAS : AREAS.filter(a=>a.key===myArea());
+  const areasMostrar = isAdminOrVisor() ? AREAS : AREAS.filter(a=>a.key===myArea());
   const sdivLbl=document.getElementById('sdiv-areas-label');
   if(sdivLbl) sdivLbl.textContent = isAdmin()?'Estado de las Direcciones':'Mi Dirección';
   document.getElementById('ini-areas').innerHTML=areasMostrar.map(a=>{
@@ -1476,7 +1482,7 @@ function renderInicio(){
   // Strip de mensajes para directores
   const stripEl = document.getElementById('ini-msg-strip');
   if(stripEl){
-    if(!isAdmin() && currentUser){
+    if(!isAdmin() && !isVisor() && currentUser){
       const area = myArea();
       const msgsNew = DB.mensajes
         ? DB.mensajes.filter(m=>(m.para===area||m.para==='TODAS')&&!m.leido)
@@ -1524,8 +1530,8 @@ function renderDashboard(){
   // Título dinámico
   const dTitle=document.getElementById('dash-title');
   const dSub=document.getElementById('dash-sub');
-  if(dTitle) dTitle.textContent=isAdmin()?'Dashboard Ejecutivo 📊':'Mi Dashboard 📊';
-  if(dSub) dSub.textContent=isAdmin()?'Estadísticas consolidadas · Actualización en tiempo real':'Estadísticas de tu dirección · '+myArea();
+  if(dTitle) dTitle.textContent=isAdminOrVisor()?'Dashboard Ejecutivo 📊':'Mi Dashboard 📊';
+  if(dSub) dSub.textContent=isAdminOrVisor()?'Estadísticas consolidadas · Actualización en tiempo real':'Estadísticas de tu dirección · '+myArea();
   const proysFilt = filterByRole(DB.proyectos,'area');
   const actsFilt  = filterByRole(DB.actividades,'area');
   const tot=proysFilt.length||1,comp=proysFilt.filter(p=>p.estado==='Completado').length;
@@ -1571,7 +1577,7 @@ function renderDashboard(){
       <div class="kpi-sub">Proyectos fuera de plan</div>
       <span class="kpi-badge ${ret>0?'br':'bg'}">${ret>0?'Atención → ':'Sin riesgos'}</span>
     </div>`;
-  const areasDash = isAdmin() ? AREAS : AREAS.filter(a=>a.key===myArea());
+  const areasDash = isAdminOrVisor() ? AREAS : AREAS.filter(a=>a.key===myArea());
   document.getElementById('dash-avance').innerHTML=areasDash.map(a=>{
     const ps=proysFilt.filter(p=>p.area===a.key);
     const pct=ps.length?Math.round(ps.reduce((s,p)=>s+p.avance,0)/ps.length):0;
@@ -1660,7 +1666,7 @@ function fAct(s,btn){fActState=s;document.querySelectorAll('#page-actividades .f
 function renderActs(){
   // Botón nueva actividad solo para admin
   const phAct=document.getElementById('ph-act-actions');
-  if(phAct) phAct.innerHTML=isAdmin()?'<button class="btn btn-primary" onclick="openModal(\'mAct\')">+ Nueva actividad</button>':'';
+  if(phAct) phAct.innerHTML=isAdmin()&&!isVisor()?'<button class="btn btn-primary" onclick="openModal(\'mAct\')">+ Nueva actividad</button>':'';
   const s=(document.getElementById('srchAct')?.value||'').toLowerCase();
   const base=filterByRole(DB.actividades,'area');
   const list=base.filter(a=>(fActState==='Todos'||a.periodo===fActState)&&(a.texto.toLowerCase().includes(s)||a.area.toLowerCase().includes(s)));
@@ -1721,9 +1727,9 @@ function actaHTML(a){
 function renderActas(){
   // Botón nueva acta solo para admin
   const phActa=document.getElementById('ph-acta-actions');
-  if(phActa) phActa.innerHTML=isAdmin()?'<button class="btn btn-primary" onclick="openModal(\'mActa\')">+ Nueva acta</button>':'';
+  if(phActa) phActa.innerHTML=isAdmin()&&!isVisor()?'<button class="btn btn-primary" onclick="openModal(\'mActa\')">+ Nueva acta</button>':'';
   const s=(document.getElementById('srchActa')?.value||'').toLowerCase();
-  const base=isAdmin() ? DB.actas : DB.actas.filter(a=>a.area===myArea()||a.area==='Secretaría Técnica');
+  const base=isAdminOrVisor() ? DB.actas : DB.actas.filter(a=>a.area===myArea()||a.area==='Secretaría Técnica');
   const list=base.filter(a=>(fActaState==='Todos'||a.tipo===fActaState)&&(a.titulo.toLowerCase().includes(s)||a.area.toLowerCase().includes(s)));
   document.getElementById('actas-grid').innerHTML=list.length?list.map(a=>actaHTML(a)).join(''):`<div class="empty" style="grid-column:span 3"><div class="empty-ico">📄</div><div class="empty-t">Sin actas registradas</div><div class="empty-s">Registra la primera acta o minuta</div></div>`;
 }
@@ -2217,7 +2223,7 @@ function enviarMensaje(){
 
 // Mostrar alerta de mensajes nuevos al directores al login
 function checkMensajesNuevos(){
-  if(!currentUser || isAdmin()) return;
+  if(!currentUser || isAdmin() || isVisor()) return;
   const nuevos = DB.mensajes.filter(m=>m.para===myArea()&&!m.leido);
   if(nuevos.length > 0){
     nuevos.forEach(m=>{
@@ -2282,6 +2288,7 @@ window.addEventListener('load', () => {
 /* ── INIT ── */
 updateDate();
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+entListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 </script>
 </body>
 </html>
