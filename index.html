@@ -1329,10 +1329,36 @@ function proyHTML(p){
   </div>`;
 }
 function renderProys(){
+  // Botón "+ Nuevo proyecto" solo para Secretaría Técnica (admin)
+  const phProy = document.getElementById('ph-proy-actions');
+  if(phProy){
+    if(isAdmin() && !isVisor()){
+      phProy.innerHTML = '';
+      const btnNuevoProy = document.createElement('button');
+      btnNuevoProy.className = 'btn btn-primary';
+      btnNuevoProy.textContent = '+ Nuevo proyecto';
+      btnNuevoProy.addEventListener('click', function(){ openNuevoProy(); });
+      phProy.appendChild(btnNuevoProy);
+    } else {
+      phProy.innerHTML = '';
+    }
+  }
   const s=(document.getElementById('srchProy')?.value||'').toLowerCase();
   const base=filterByRole(DB.proyectos,'area');
   const list=base.filter(p=>(fProyState==='Todos'||p.estado===fProyState)&&(p.nombre.toLowerCase().includes(s)||p.area.toLowerCase().includes(s)));
   document.getElementById('proy-grid').innerHTML=list.length?list.map(p=>proyHTML(p)).join(''):`<div class="empty" style="grid-column:span 3"><div class="empty-ico">🗂️</div><div class="empty-t">Sin proyectos</div><div class="empty-s">Agrega el primer proyecto</div></div>`;
+}
+function openNuevoProy(){
+  editProyId = null;
+  document.getElementById('mProyTit').textContent = 'Nuevo Proyecto';
+  document.getElementById('p-nom').value = '';
+  document.getElementById('p-desc').value = '';
+  document.getElementById('p-dir').value = '';
+  document.getElementById('p-area').value = 'Secretaría Técnica';
+  document.getElementById('p-est').value = 'En tiempo';
+  document.getElementById('p-av').value = 0;
+  document.getElementById('p-fecha').value = '';
+  openModal('mProy');
 }
 function saveProy(){
   const nom=document.getElementById('p-nom').value.trim();
